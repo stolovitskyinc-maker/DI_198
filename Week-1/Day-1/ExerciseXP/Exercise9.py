@@ -1,5 +1,6 @@
-a = 5
-b = 2
+height = float(input("Enter your height in cm: "))
 
-if a > b:
-    print("hello World")
+if height > 145:
+    print("You are tall enough to ride!")
+else:
+    print("You need to grow some more to ride.")
