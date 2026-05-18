@@ -47,6 +47,9 @@ print(basket)
 # Think: Can you generate this sequence using a loop or another method?
 # mixed_list = []
 # current = 1.5
+current = 0
+mixed_list = []
+
 while current <= 5:
     if current.is_integer():
         mixed_list.append(int(current))
