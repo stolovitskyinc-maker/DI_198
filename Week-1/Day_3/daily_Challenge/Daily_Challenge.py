@@ -68,7 +68,53 @@ items_purchase = {
     "TV": "$1,000",
     "Fertilizer": "$20"
     }
-wallet_str = "$300"
+wallet = "$300"
+
+wallet = float(wallet.replace("$", "").replace(",", ""))
+
+basket = []
+
+for item, price_str in items_purchase.items():
+    price = float(price_str.replace("$", "").replace(",", ""))
+
+    if wallet >= price:
+        basket.append(item)
+        wallet -= price
+
+if not basket:
+    print("Nothing")
+else:
+    basket.sort()
+    print(basket)
+
+
+items_purchase = {"Apple": "$4", "Honey": "$3", "Fan": "$14", "Bananas": "$4", "Pan": "$100", "Spoon": "$2"}
+wallet = "$100"
+wallet = float(wallet.replace("$", "").replace(",", ""))
+
+basket = []
+
+for item, price_str in items_purchase.items():
+    price = float(price_str.replace("$", "").replace(",", ""))
+
+    if wallet >= price:
+        basket.append(item)
+        wallet -= price
+
+if not basket:
+    print("Nothing")
+else:
+    basket.sort()
+    print(basket)
+    
+    
+items_purchase = {
+    "Phone": "$999", 
+    "Speakers": "$300", 
+    "Laptop": "$5,000", 
+    "PC": "$1200"
+}
+wallet_str = "$1"
 
 wallet = float(wallet_str.replace("$", "").replace(",", ""))
 
@@ -76,7 +122,7 @@ basket = []
 
 for item, price_str in items_purchase.items():
     price = float(price_str.replace("$", "").replace(",", ""))
-
+    
     if wallet >= price:
         basket.append(item)
         wallet -= price
