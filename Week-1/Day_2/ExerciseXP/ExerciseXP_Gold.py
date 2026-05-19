@@ -59,7 +59,7 @@ words = []
 print("Please enter 7 words:")
 for i in range(1, 8):
     word = input(f"Word {i}: ").strip()
-    word.append(word)
+    words.append(word)
 
 letter = input("\nEnter a single letter to search for: ").strip()
 
