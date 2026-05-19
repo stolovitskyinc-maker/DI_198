@@ -59,7 +59,7 @@ words = []
 print("Please enter 7 words:")
 for i in range(1, 8):
     word = input(f"Word {i}: ").strip()
-    words.append(word)
+    word.append(word)
 
 letter = input("\nEnter a single letter to search for: ").strip()
 
@@ -115,7 +115,6 @@ print(numbers_tuple)
 # Bonus 2: on exiting the loop tally up and display total games won and lost.
 import random
 
-# Initialize win/loss trackers
 wins = 0
 losses = 0
 

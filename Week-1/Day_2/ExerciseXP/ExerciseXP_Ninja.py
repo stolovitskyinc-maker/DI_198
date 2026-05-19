@@ -10,7 +10,6 @@ C = 50
 H = 30
 
 user_input = input("Enter comma-separated values for D: ")
-
 d_values = user_input.split(",")
 
 results = []
