@@ -1,145 +1,163 @@
-# Conway's Game of Life Implementation
-# Rules:
-# 1. Any live cell with fewer than two live neighbours dies (underpopulation).
-# 2. Any live cell with two or three live neighbours lives on.
-# 3. Any live cell with more than three live neighbours dies (overpopulation).
-# 4. Any dead cell with exactly three live neighbours becomes a live cell (reproduction).
-#
-# Constraints: Uses Object-Oriented Programming (Classes) and supports fixed or expanding boundaries.
-
 import time
 import os
-
+import random
 class Cell:
     """Represents a single cell in the grid."""
     def __init__(self, is_alive=False):
         self.is_alive = is_alive
 
-    def get_next_state(self, live_neighbors):
-        """Applies the 4 rules of Conway's Game of Life."""
-        if self.is_alive:
-            if live_neighbors < 2 or live_neighbors > 3:
-                return False  # Underpopulation or Overpopulation
-            return True       # Survives
-        else:
-            if live_neighbors == 3:
-                return True   # Reproduction
-            return False      # Remains dead
+    def get_char(self):
+        """Returns visual representation of the cell."""
+        return "■ " if self.is_alive else ". "
 
 
 class GameOfLife:
-    """Manages the board, game loop, transitions, and rendering."""
-    def __init__(self, rows, cols, initial_live_cells=None, expandable=False, max_size=10000):
+    """Handles the game logic, grid updates, and rendering."""
+    def __init__(self, rows, cols, initial_live_coords=None, expandable=False, max_size=100):
         self.rows = rows
         self.cols = cols
         self.expandable = expandable
         self.max_size = max_size
+        self.generation = 0
         
-        # Grid offset tracker used primarily for the expandable bonus configuration
-        self.row_offset = 0
-        self.col_offset = 0
+        # Initialize grid with dead cells
+        self.grid = [[Cell(False) for _ in range(self.cols)] for _ in range(self.rows)]
+        
+        # Seed initial state
+        if initial_live_coords:
+            self.seed(initial_live_coords)
 
-        # Initialize full grid with dead Cell objects
-        self.grid = [[Cell(False) for _ in range(cols)] for _ in range(rows)]
+    def seed(self, coords):
+        """Populates the grid with initial live cells."""
+        for r, c in coords:
+            if 0 <= r < self.rows and 0 <= c < self.cols:
+                self.grid[r][c].is_alive = True
 
-        # Populate initial live cells
-        if initial_live_cells:
-            for r, c in initial_live_cells:
-                if 0 <= r < rows and 0 <= c < cols:
-                    self.grid[r][c].is_alive = True
+    def display(self):
+        """Clears terminal and prints the current generation."""
+        os.system('cls' if os.name == 'nt' else 'clear')
+        print(self.get_status_string())
+        
+    def get_status_string(self):
+        """Generates the text grid for display."""
+        out = [f"Generation: {self.generation} | Grid Size: {self.rows}x{self.cols}"]
+        out.append("-" * (self.cols * 2))
+        for row in self.grid:
+            out.append("".join(cell.get_char() for cell in row))
+        return "\n".join(out)
 
     def count_live_neighbors(self, r, c):
-        """Counts how many of the 8 surrounding cells are alive."""
+        """Counts how many of the 8 neighbors are alive."""
         live_count = 0
         for dr in [-1, 0, 1]:
             for dc in [-1, 0, 1]:
                 if dr == 0 and dc == 0:
                     continue
                 nr, nc = r + dr, c + dc
-                
                 if 0 <= nr < self.rows and 0 <= nc < self.cols:
                     if self.grid[nr][nc].is_alive:
                         live_count += 1
         return live_count
 
-    def check_and_expand_grid(self):
-        """Bonus: Seamlessly expands grid boundaries if active cells touch borders."""
+    def check_expansion_needs(self):
+        """Bonus feature: Detects if live cells touch the current boundary."""
+        if not self.expandable:
+            return False, False, False, False
+
         expand_top = any(self.grid[0][c].is_alive for c in range(self.cols))
         expand_bottom = any(self.grid[self.rows-1][c].is_alive for c in range(self.cols))
         expand_left = any(self.grid[r][0].is_alive for r in range(self.rows))
         expand_right = any(self.grid[r][self.cols-1].is_alive for r in range(self.rows))
+        
+        return expand_top, expand_bottom, expand_left, expand_right
 
-        # Block expansion if safety thresholds are exceeded
-        if self.rows >= self.max_size or self.cols >= self.max_size:
-            return
-
-        if expand_top:
+    def expand_grid(self, top, bottom, left, right):
+        """Expands the matrix dynamically if memory limits allow."""
+        # Pad top or bottom rows
+        if top and self.rows < self.max_size:
             self.grid.insert(0, [Cell(False) for _ in range(self.cols)])
             self.rows += 1
-            self.row_offset -= 1
-        if expand_bottom:
+        if bottom and self.rows < self.max_size:
             self.grid.append([Cell(False) for _ in range(self.cols)])
             self.rows += 1
-        if expand_left:
+            
+        # Pad left or right columns
+        if left and self.cols < self.max_size:
             for row in self.grid:
                 row.insert(0, Cell(False))
             self.cols += 1
-            self.col_offset -= 1
-        if expand_right:
+        if right and self.cols < self.max_size:
             for row in self.grid:
                 row.append(Cell(False))
             self.cols += 1
 
-    def compute_next_generation(self):
-        """Calculates state changes and constructs the new grid state synchronously."""
+    def step(self):
+        """Computes the next generation using Conway's rules."""
         if self.expandable:
-            self.check_and_expand_grid()
+            t, b, l, r = self.check_expansion_needs()
+            if any([t, b, l, r]):
+                self.expand_grid(t, b, l, r)
 
-        # Phase 1: Pre-calculate the next state for every coordinate point
-        next_states = [[False for _ in range(self.cols)] for _ in range(self.rows)]
+        # Precompute neighbor matrix to avoid altering data midway
+        neighbor_counts = [[0 for _ in range(self.cols)] for _ in range(self.rows)]
         for r in range(self.rows):
             for c in range(self.cols):
-                neighbors = self.count_live_neighbors(r, c)
-                next_states[r][c] = self.grid[r][c].get_next_state(neighbors)
+                neighbor_counts[r][c] = self.count_live_neighbors(r, c)
 
-        # Phase 2: Update cells to their new values simultaneously
-        for r in range(self.rows):
-            for c in range(self.cols):
-                self.grid[r][c].is_alive = next_states[r][c]
-
-    def display(self, generation):
-        """Renders the grid cleanly to the console console platform."""
-        # Clears screen context per generation refresh loop
-        os.system('cls' if os.name == 'nt' else 'clear')
-        print(f"=== Conway's Game of Life | Generation: {generation} ===")
-        print(f"Grid Dimensions: {self.rows}x{self.cols}\n")
+        # Apply survival/reproduction rules
+        grid_changed = False
+        next_grid = [[Cell(False) for _ in range(self.cols)] for _ in range(self.rows)]
         
-        for row in self.grid:
-            row_str = "".join(["◼ " if cell.is_alive else "◻ " for cell in row])
-            print(row_str)
-        print("\nPress Ctrl+C to terminate application.")
+        for r in range(self.rows):
+            for c in range(self.cols):
+                is_alive = self.grid[r][c].is_alive
+                neighbors = neighbor_counts[r][c]
+                
+                if is_alive:
+                    # Rule 1 & 3: Under/Overpopulation. Rule 2: Lives on.
+                    next_state = neighbors == 2 or neighbors == 3
+                else:
+                    # Rule 4: Reproduction
+                    next_state = neighbors == 3
+                
+                next_grid[r][c].is_alive = next_state
+                if next_state != is_alive:
+                    grid_changed = True
 
-    def run_simulation(self, max_generations=50, delay=0.3):
-        """Primary controller engine loop updating state sequentially."""
-        try:
-            for gen in range(1, max_generations + 1):
-                self.display(gen)
-                self.compute_next_generation()
-                time.sleep(delay)
-        except KeyboardInterrupt:
-            print("\nSimulation aborted by user instruction.")
+        self.grid = next_grid
+        self.generation += 1
+        return grid_changed
 
 
-# --- Presets & Execution Testing Setup ---
+# ==========================================
+# INITIAL PRESETS FOR TESTING
+# ==========================================
+
+# 1. Blinker (Period 2 Oscillator)
+blinker_coords = [(2, 1), (2, 2), (2, 3)]
+
+# 2. Beacon (Period 2 Oscillator)
+beacon_coords = [(1, 1), (1, 2), (2, 1), (2, 2), (3, 3), (3, 4), (4, 3), (4, 4)]
+
+# 3. Glider (Spaceship that travels across the board)
+glider_coords = [(0, 1), (1, 2), (2, 0), (2, 1), (2, 2)]
+
+
+# ==========================================
+# SIMULATION RUNNER
+# ==========================================
 if __name__ == "__main__":
-    # Setup Option A: "The Glider" (Transports itself diagonally forever)
-    glider_cells = [(0, 1), (1, 2), (2, 0), (2, 1), (2, 2)]
+    # Change "expandable" to True to activate the bonus feature.
+    # Safe small max_size used for terminal rendering clarity. Increase up to 10000 if needed.
+    game = GameOfLife(rows=10, cols=15, initial_live_coords=glider_coords, expandable=True, max_size=30)
     
-    # Setup Option B: "Blinker" (Oscillates static position state forever)
-    blinker_cells = [(2, 1), (2, 2), (2, 3)]
-
-    # Instantiate game with a fixed map window size (Set expandable=True for the bonus variant)
-    game = GameOfLife(rows=10, cols=40, initial_live_cells=glider_cells, expandable=False)
-    
-    # Run the interactive loop engine
-    game.run_simulation(max_generations=30, delay=0.2)
+    max_generations = 30
+    for _ in range(max_generations):
+        game.display()
+        time.sleep(0.3)
+        has_changed = game.step()
+        
+        if not has_changed:
+            game.display()
+            print("\nSimulation reached a static state or died out.")
+            break
