@@ -1,50 +1,55 @@
 from anagram_checker import AnagramChecker
 
 def main():
-    # Initialize the checker (looks for 'word_list.txt' by default)
+    # Instantiate the logic class
     checker = AnagramChecker()
-    
-    # Check if the dictionary loaded successfully before starting
-    if not checker.word_list:
-        print("Please ensure your word list file exists and try again.")
-        return
 
-    print("--- Welcome to the Anagram Finder ---")
-    
     while True:
-        print("\nMenu:")
-        print("1. Find anagrams for a word")
+        print("\n--- ANAGRAM CHECKER MENU ---")
+        print("1. Input a word")
         print("2. Exit")
         
-        choice = input("Select an option (1-2): ").strip()
+        choice = input("Choose an option (1-2): ").strip()
         
         if choice == "2":
             print("Goodbye!")
             break
+            
         elif choice == "1":
-            user_word = input("Enter a single word: ").strip()
+            user_input = input("Enter a word: ").strip()
             
-            # Input validation for single words containing only alphabets
-            if not user_word.isalpha():
-                print("Error: Please enter a single word containing only letters.")
+            # Validation 1: Check if empty
+            if not user_input:
+                print("Error: Input cannot be empty.")
                 continue
                 
-            # Check validity against dictionary
-            if not checker.is_valid_word(user_word):
-                print(f"'{user_word}' is not a valid English word in our dictionary.")
+            # Validation 2: Ensure it is a single word (no inner whitespace spaces)
+            if len(user_input.split()) > 1:
+                print("Error: Only a single word is allowed.")
                 continue
                 
-            print(f"\nWord entered: '{user_word}'")
-            print("Status: Valid word")
+            # Validation 3: Only alphabetic letters allowed
+            if not user_input.isalpha():
+                print("Error: Only alphabetic characters are allowed. No numbers/symbols.")
+                continue
             
-            # Find and display anagrams
-            anagrams = checker.get_anagrams(user_word)
-            if anagrams:
-                print(f"Anagrams found: {', '.join(anagrams)}")
+            # Logic Processing
+            if checker.is_valid_word(user_input):
+                print(f"\nYOUR WORD :\"{user_input.upper()}\"")
+                print("this is a valid English word.")
+                
+                # Fetch and display structural anagrams
+                anagrams = checker.get_anagrams(user_input)
+                if anagrams:
+                    print(f"Anagrams for your word: {', '.join(anagrams)}.")
+                else:
+                    print("No anagrams found for your word.")
             else:
-                print("No anagrams found for this word.")
+                print(f"\nYOUR WORD :\"{user_input.upper()}\"")
+                print("This is NOT a valid English word in our dictionary.")
+                
         else:
-            print("Invalid choice. Please enter 1 or 2.")
+            print("Invalid selection. Please choose 1 or 2.")
 
 if __name__ == "__main__":
     main()
