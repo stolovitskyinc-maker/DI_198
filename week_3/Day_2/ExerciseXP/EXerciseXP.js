@@ -112,28 +112,76 @@ console.log(changeEnough(14.11, [2, 100, 0, 0])); // false
 console.log(changeEnough(0.75, [0, 0, 20, 5])); // true
 
 /*
+
+/*
 🌟 Exercise 4 : Vacations Costs
 Instructions
-Define hotelCost(): asks user for nights. Must be a number. Costs $140/night.
-Define planeRideCost(): asks user for destination. "London": $183, "Paris": $220, others: $300.
-Define rentalCarCost(): asks user for days. Costs $40/day. >10 days gets 5% discount.
-Define totalVacationCost(): calls the 3 functions and logs the total breakdown.
+Let’s create functions that calculate your vacation’s costs:
+
+Define a function called hotelCost().
+It should ask the user for the number of nights they would like to stay in the hotel.
+If the user doesn’t answer or if the answer is not a number, ask again.
+The hotel costs $140 per night. The function should return the total price of the hotel.
+
+Define a function called planeRideCost().
+It should ask the user for their destination.
+If the user doesn’t answer or if the answer is not a string, ask again.
+The function should return a different price depending on the location.
+“London”: 183$
+“Paris” : 220$
+All other destination : 300$
+
+Define a function called rentalCarCost().
+It should ask the user for the number of days they would like to rent the car.
+If the user doesn’t answer or if the answer is not a number, ask again.
+Calculate the cost to rent the car. The car costs $40 everyday.
+If the user rents a car for more than 10 days, they get a 5% discount.
+The function should return the total price of the car rental.
+
+Define a function called totalVacationCost() that returns the total cost of the user’s vacation by calling the 3 functions that you created above.
+Example : The car cost: $x, the hotel cost: $y, the plane tickets cost: $z.
+Hint: You have to call the functions hotelCost(), planeRideCost() and rentalCarCost() inside the function totalVacationCost().
+
+Call the function totalVacationCost()
 
 Bonus: Instead of using a prompt inside the 3 first functions, only use a prompt inside the totalVacationCost() function. You need to change the 3 first functions, accordingly.
 */
 
-// Refactored functions accepting arguments directly to fulfill the Bonus requirement
+// Helper function to validate number inputs (reduces totalVacationCost complexity)
+function getValidNumber(message) {
+    while (true) {
+        let input = prompt(message);
+        let num = Number(input);
+        if (input !== null && input.trim() !== "" && !isNaN(num) && num >= 0) {
+            return num;
+        }
+    }
+}
+
+// Helper function to validate string inputs (reduces totalVacationCost complexity)
+function getValidString(message) {
+    while (true) {
+        let input = prompt(message);
+        if (input !== null && input.trim() !== "" && isNaN(Number(input))) {
+            return input;
+        }
+    }
+}
+
+// Refactored calculation function for Hotel Cost
 function hotelCost(nights) {
     return nights * 140;
 }
 
+// Refactored calculation function for Plane Ride Cost
 function planeRideCost(destination) {
-    destination = destination.trim().toLowerCase();
-    if (destination === "london") return 183;
-    if (destination === "paris") return 220;
+    let lowerDest = destination.trim().toLowerCase();
+    if (lowerDest === "london") return 183;
+    if (lowerDest === "paris") return 220;
     return 300;
 }
 
+// Refactored calculation function for Rental Car Cost
 function rentalCarCost(days) {
     let cost = days * 40;
     if (days > 10) {
@@ -142,31 +190,12 @@ function rentalCarCost(days) {
     return cost;
 }
 
+// Main coordinator function - short and clean to pass VSC quality checks
 function totalVacationCost() {
-    // Prompt and validate Hotel Nights
-    let nights;
-    while (true) {
-        let input = prompt("How many nights would you like to stay at the hotel?");
-        nights = Number(input);
-        if (input !== null && input.trim() !== "" && !isNaN(nights) && nights >= 0) break;
-    }
+    const nights = getValidNumber("How many nights would you like to stay at the hotel?");
+    const destination = getValidString("What is your destination?");
+    const days = getValidNumber("How many days would you like to rent the car?");
 
-    // Prompt and validate Destination
-    let destination;
-    while (true) {
-        destination = prompt("What is your destination?");
-        if (destination !== null && destination.trim() !== "" && isNaN(Number(destination))) break;
-    }
-
-    // Prompt and validate Car Rental Days
-    let days;
-    while (true) {
-        let input = prompt("How many days would you like to rent the car?");
-        days = Number(input);
-        if (input !== null && input.trim() !== "" && !isNaN(days) && days >= 0) break;
-    }
-
-    // Calculate individual costs using the helper functions
     const hotel = hotelCost(nights);
     const plane = planeRideCost(destination);
     const car = rentalCarCost(days);
