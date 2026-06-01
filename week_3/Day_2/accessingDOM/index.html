@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <title>accessing DOM</title>
+</head>
+<body>
+    <div id="Users">Users:</div>
+    <ul>
+        <li class= "user" id="John">John</li>
+        <li class="user" id="Pete">Pete</li>
+    </ul>
+
+    <script>
+        // Accessing DOM elements
+        const bodyElement = document.body;
+        console.log(bodyElement);
+
+        const pete = document.getElementById('Pete');
+        console.log(pete);
+
+        const john = document.getElementById('John');
+        console.log(john);
+
+        const users = document.getElementById('Users');
+        console.log(users);
+
+        const userGroup = document.getElementsByClassName('user');
+        console.log(userGroup);
+
+        const listItems = document.querySelectorAll('li');
+        console.log(listItems);
+
+        const firstListItem = document.querySelector('#John');
+        console.log(firstListItem);
+
+        const secondListItem = document.querySelector('#Pete');
+        console.log(secondListItem);
+    </script>
+</body>
+</html>
