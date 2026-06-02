@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List</title>
+    <!-- Font Awesome CDN Link for the "X" Close Icons -->
+    <link rel="stylesheet" href="https://cloudflare.com">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="todo-card">
+        <h1>TO-DO LIST</h1>
+
+        <!-- Form for input collection -->
+        <form id="taskForm">
+            <input type="text" id="taskInput" placeholder="new task" required>
+            <button type="submit" id="addBtn">ADD</button>
+        </form>
+
+        <!-- Container target for rendering tasks -->
+        <div class="listTasks"></div>
+
+        <!-- Footnote Controls matching the design image -->
+        <div class="footer-controls">
+            <button id="clearAllBtn">Clear</button>
+        </div>
+    </div>
+
+    <!-- Script Hook -->
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,104 @@
+/* Core Document Presentation Alignment */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #1e1e24;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+/* Master Layout Grid wrapper split */
+.game-container {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 30px;
+    background-color: #2a2a35;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+/* Left Panel Control Typography & buttons */
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.sidebar h2 {
+    margin: 0;
+    color: #00adb5;
+}
+
+.sidebar p {
+    font-size: 14px;
+    color: #b9b9c3;
+    line-height: 1.4;
+}
+
+/* Palette Matrix: 3 columns of circular colors */
+.palette-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-top: 10px;
+}
+
+.color-swatch {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 3px solid transparent;
+    transition: transform 0.2s, border-color 0.2s;
+}
+
+.color-swatch:hover {
+    transform: scale(1.1);
+}
+
+.color-swatch.active {
+    border-color: #ffffff;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+/* Action Control button custom properties */
+#clear-btn {
+    margin-top: auto;
+    padding: 12px;
+    background-color: #ff2e63;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 15px;
+    transition: background-color 0.2s;
+}
+
+#clear-btn:hover {
+    background-color: #e21f4f;
+}
+
+/* Canvas Square Grid Workspace Layout Matrix (60x40 Grid System) */
+.canvas-container {
+    display: grid;
+    grid-template-columns: repeat(60, 12px);
+    grid-template-rows: repeat(40, 12px);
+    gap: 1px;
+    background-color: #3f3f52; /* Acting as the grid line borders border-color gap */
+    border: 2px solid #3f3f52;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+/* Individual Drawing Cells inside canvas */
+.canvas-square {
+    background-color: #ffffff;
+    cursor: crosshair;
+    user-select: none; /* Prevents text highlighting drag bugs */
+}

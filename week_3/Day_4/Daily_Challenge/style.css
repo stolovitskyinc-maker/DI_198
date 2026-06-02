@@ -1,0 +1,123 @@
+/* Document Baseline Initialization */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #ff6b6b, #ff4757);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Container Wrapper Box Layout Card */
+.todo-card {
+    background-color: #ffffff;
+    width: 400px;
+    padding: 25px 0 0 0;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    border-radius: 4px;
+}
+
+h1 {
+    text-align: center;
+    color: #ffffff;
+    font-size: 24px;
+    letter-spacing: 1px;
+    margin: 0 0 25px 0;
+    background-color: transparent;
+    mix-blend-mode: difference; /* Forces visibility against gradients */
+}
+
+/* Header Action Form Row Grid Alignment */
+#taskForm {
+    display: flex;
+    border-bottom: 2px solid #f1f2f6;
+    padding: 0 20px 15px 20px;
+}
+
+#taskInput {
+    flex: 1;
+    border: none;
+    outline: none;
+    font-size: 18px;
+    color: #57606f;
+}
+
+#taskInput::placeholder {
+    color: #a4b0be;
+}
+
+#addBtn {
+    background: none;
+    border: none;
+    color: #1e90ff;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+/* Master Task Item Stack Layout Area */
+.listTasks {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+/* Individual Task Item Row Blocks */
+.task-item {
+    display: flex;
+    align-items: center;
+    padding: 15px 20px;
+    border-bottom: 1px solid #ced6e0;
+}
+
+/* Delete Button Box */
+.delete-btn {
+    background-color: #ff4757;
+    color: #ffffff;
+    border: none;
+    border-radius: 3px;
+    width: 22px;
+    height: 22px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    font-size: 12px;
+    margin-right: 12px;
+}
+
+/* Checkbox alignment */
+.task-checkbox {
+    margin-right: 12px;
+    cursor: pointer;
+}
+
+/* Label text styles */
+.task-label {
+    font-size: 16px;
+    color: #2f3542;
+    cursor: pointer;
+    user-select: none;
+}
+
+/* Check off State Modifiers matching reference colors */
+.task-item.checked-off .task-label {
+    color: #ff4757;
+    text-decoration: line-through;
+}
+
+/* Footer layout */
+.footer-controls {
+    display: flex;
+    justify-content: flex-end;
+    padding: 15px 20px;
+}
+
+#clearAllBtn {
+    background: none;
+    border: none;
+    color: #ff4757;
+    cursor: pointer;
+    font-size: 14px;
+}
