@@ -1,0 +1,57 @@
+<!doctype html> 
+<html lang="en"> 
+    <head> 
+        <meta charset="utf-8"> 
+        <title>Volume of a Sphere</title> 
+        <style>  
+            body {
+                padding-top:30px;
+            } 
+            label, input {
+                display:block;
+                margin-bottom: 10px;
+            }  
+        </style> 
+    </head> 
+    <body> 
+        <p>Input radius value and get the volume of a sphere.</p> 
+        <form id="MyForm"> 
+            <label for="radius">Radius</label>
+            <input type="text" name="radius" id="radius" required> 
+            
+            <label for="volume">Volume</label>
+            <!-- Made readonly so users see the programmatic calculation result -->
+            <input type="text" name="volume" id="volume" readonly> 
+            
+            <input type="submit" value="Calculate" id="submit">    
+        </form> 
+
+        <script>
+            /*
+            Exercise 4 : Volume of a sphere
+            Formula: V = (4/3) * π * r³
+            */
+            const form = document.getElementById("MyForm");
+
+            form.addEventListener("submit", (event) => {
+                event.preventDefault();
+
+                const radiusInput = document.getElementById("radius").value;
+                const volumeOutput = document.getElementById("volume");
+                
+                const r = Number(radiusInput);
+
+                // Validation to check if input is a valid positive number
+                if (!isNaN(r) && r >= 0) {
+                    // Calculate volume: (4/3) * pi * r cubed
+                    const volume = (4 / 3) * Math.PI * Math.pow(r, 3);
+                    
+                    // Display volume fixed to 2 decimal places for visual neatness
+                    volumeOutput.value = volume.toFixed(2);
+                } else {
+                    alert("Please enter a valid positive number for the radius.");
+                }
+            });
+        </script>
+    </body> 
+</html>

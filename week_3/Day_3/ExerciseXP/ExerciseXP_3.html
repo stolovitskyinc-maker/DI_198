@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercise XP 3</title>
+</head>
+<body>
+    <p id="sentence">
+        <strong>Hello</strong> I hope you are enjoying <strong>this</strong> class. At the
+        <strong>end</strong> you <strong>will</strong> be great Developers!
+        <strong>Enjoy</strong> the <strong>JavaScript </strong> lessons
+    </p>
+
+    <script>    
+        /*
+        Exercise 3 : Transform the sentence
+        */
+
+        // 1. Declare a global variable
+        let allBoldItems;
+
+        // 2. Collect all bold items inside the paragraph
+        function getBoldItems() {
+            allBoldItems = document.querySelectorAll("#sentence strong");
+        }
+
+        // 3. Change the color of all bold text to blue
+        function highlight() {
+            allBoldItems.forEach(item => item.style.color = "blue");
+        }
+
+        // 4. Change the color of all bold text back to black
+        function returnItemsToDefault() {
+            allBoldItems.forEach(item => item.style.color = "black");
+        }
+
+        // Initialize collection and attach listeners
+        getBoldItems();
+
+        const paragraph = document.getElementById("sentence");
+        paragraph.addEventListener("mouseover", highlight);
+        paragraph.addEventListener("mouseout", returnItemsToDefault);
+    </script>
+</body>
+</html>

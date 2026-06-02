@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Excercise XP 2</title>
+</head>
+<body>
+    <form>
+        <label for="fname">First name:</label><br>
+        <input type="text" id="fname" name="firstname"><br>
+        <label for="lname">Last name:</label><br>
+        <input type="text" id="lname" name="lastname"><br><br>
+        <input type="submit" value="Submit" id="submit">
+    </form> 
+   
+    <ul class="usersAnswer"></ul>
+
+    <script>
+        /*
+        Exercise 2 : Work with forms
+        */
+
+        // 1. Retrieve the form and console.log it
+        const formElement = document.querySelector("form");
+        console.log(formElement);
+
+        // 2. Retrieve inputs by their id and console.log them
+        const fnameById = document.getElementById("fname");
+        const lnameById = document.getElementById("lname");
+        console.log("By ID:", fnameById, lnameById);
+
+        // 3. Retrieve inputs by their name attribute and console.log them
+        const fnameByName = document.querySelector('[name="firstname"]');
+        const lnameByName = document.querySelector('[name="lastname"]');
+        console.log("By Name Attribute:", fnameByName, lnameByName);
+
+        // 4. Form submission handler
+        formElement.addEventListener("submit", (event) => {
+            // Why event.preventDefault()? It prevents the browser from refreshing the page 
+            // and wiping out our newly generated DOM changes or console messages.
+            event.preventDefault();
+        
+            const firstNameValue = fnameById.value.trim();
+            const lastNameValue = lnameById.value.trim();
+            const answersList = document.querySelector(".usersAnswer");
+        
+            // Make sure values are not empty
+            if (firstNameValue !== "" && lastNameValue !== "") {
+                // Clear previous answers to prevent duplicates if submitted multiple times
+                answersList.innerHTML = "";
+            
+                // Create and append an li per input value
+                const liFirst = document.createElement("li");
+                liFirst.textContent = firstNameValue;
+
+                const liLast = document.createElement("li");
+                liLast.textContent = lastNameValue;
+            
+                answersList.appendChild(liFirst);
+                answersList.appendChild(liLast);
+            }
+        });
+    </script>
+</body>
+</html>
