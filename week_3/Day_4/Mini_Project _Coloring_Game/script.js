@@ -35,7 +35,7 @@ colors.forEach((color, index) => {
     // Click handler to swap selected drawing target color
     swatch.addEventListener("click", function() {
         // Clear active borders out from previous color swatch selection items
-        document.querySelectorAll(".color-swatch").forEach(s => s.classList.remove("active"));
+        document.querySelectorAll(".color-swatch").forEach(paletteSwatch => paletteSwatch.classList.remove("active"));
         
         selectedColor = color;
         swatch.classList.add("active");
@@ -46,7 +46,6 @@ colors.forEach((color, index) => {
 
 // 5. Generate Canvas Drawing Grid Matrix Squares (60 columns * 40 rows = 2400 blocks)
 const totalSquares = 2400;
-
 for (let i = 0; i < totalSquares; i++) {
     let square = document.createElement("div");
     square.classList.add("canvas-square");
@@ -80,3 +79,4 @@ clearBtn.addEventListener("click", function() {
         square.style.backgroundColor = "#ffffff";
     });
 });
+// Final line for test
