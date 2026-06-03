@@ -52,8 +52,7 @@ for (let i = 0; i < totalSquares; i++) {
 
     // Start painting directly when first clicking inside a block
     square.addEventListener("mousedown", function(event) {
-        event.preventDefault(); // Stifles normal browser component ghost dragging side effects
-        isDrawing = true;
+        event.preventDefault();
         square.style.backgroundColor = selectedColor;
     });
 
