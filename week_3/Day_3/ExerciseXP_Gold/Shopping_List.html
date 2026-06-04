@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping List</title>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script>
+        /*
+        Instructions:
+        1. Target the single <div id="root"></div> element.
+        2. Initialize an empty array to hold shopping items.
+        3. Programmatically build a form containing a text input field and an "AddItem" button.
+        4. Implement addItem() to insert the typed item into the array and render it on screen.
+        5. Programmatically build a "ClearAll" button that invokes clearAll() to empty the list.
+        */
+            
+        // 1. Initialize data array and target the root element container
+        let shoppingList = [];
+        const root = document.getElementById("root");
+            
+        // 2. Programmatically construct the layout UI elements
+        const form = document.createElement("form");
+        const itemInput = document.createElement("input");
+        const addItemBtn = document.createElement("button");
+        const clearAllBtn = document.createElement("button");
+        const listContainer = document.createElement("ul");
+            
+        // Set up the input field properties
+        itemInput.setAttribute("type", "text");
+        itemInput.setAttribute("placeholder", "What do you need to buy?");
+        itemInput.required = true;
+            
+        // Set up button texts and attributes
+        addItemBtn.textContent = "AddItem";
+        addItemBtn.setAttribute("type", "submit");
+            
+        clearAllBtn.textContent = "ClearAll";
+        clearAllBtn.setAttribute("type", "button"); // Explicitly non-submitting button
+            
+        // 3. Assemble and inject the elements into the DOM layout
+        form.appendChild(itemInput);
+        form.appendChild(addItemBtn);
+            
+        root.appendChild(form);
+        root.appendChild(clearAllBtn);
+        root.appendChild(listContainer);
+            
+        // 4. Form submit event listener to add an item
+        form.addEventListener("submit", function(event) {
+            event.preventDefault(); // Stop page refresh sequence
+            addItem();
+        });
+        
+        function addItem() {
+            let itemText = itemInput.value.trim();
+        
+            // Guard clause to ensure blank inputs aren't processed
+            if (itemText === "") return;
+        
+            // Push value to tracking array data structure
+            shoppingList.push(itemText);
+        
+            // Clear user typing input area
+            itemInput.value = "";
+        
+            // Synchronize UI view layout changes
+            renderList();
+        }
+        
+        // 5. ClearAll click event listener execution
+        clearAllBtn.addEventListener("click", clearAll);
+        
+        function clearAll() {
+            // Empty the tracking data array memory structures
+            shoppingList = [];
+            
+            // Clear out screen rendering panel workspace
+            renderList();
+        }
+        
+        // 6. Isolated UI view list rendering engine helper function
+        function renderList() {
+            // Empty text inside <ul> container wrapper nodes to avoid duplication duplicates
+            listContainer.innerHTML = "";
+            
+            // Generate matching <li> nodes for every current element matching array track
+            shoppingList.forEach(item => {
+                let li = document.createElement("li");
+                li.textContent = item;
+                listContainer.appendChild(li);
+            });
+        }
+        
+    </script>
+</body>
+</html>

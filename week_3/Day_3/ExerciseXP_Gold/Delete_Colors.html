@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delete Colors</title>
+</head>
+<body>
+    <form>
+        <select id="colorSelect">
+            <option>Red</option>
+            <option>Green</option>
+            <option>White</option>
+            <option>Black</option>
+        </select>
+    <input type="button" value="Select and Remove">
+    </form>
+    <script>
+        /*
+        Instructions:
+        1. Add a click event listener to the <input type="button">.
+        2. Call a function named removecolor() when clicked.
+        3. The function must remove the currently selected color from the dropdown list.
+        */
+            
+        // 1. Target the button and select dropdown element nodes
+        let buttonElement = document.querySelector('input[type="button"]');
+        let selectElement = document.getElementById("colorSelect");
+            
+        // 2. Attach the click event listener to the button element
+        buttonElement.addEventListener("click", removecolor);
+            
+        // 3. Define the removal handler function
+        function removecolor() {
+            // Get the index point of the currently selected option item (e.g., 0, 1, 2...)
+            let selectedIndex = selectElement.selectedIndex;
+        
+            // Guard Clause: If the dropdown is completely empty, exit early to prevent errors
+            if (selectedIndex === -1) {
+                console.log("No options left to remove!");
+                return;
+            }
+        
+            // Remove the target option matching the active index
+            selectElement.remove(selectedIndex);
+        }
+        
+    </script>
+</body>
+</html>
