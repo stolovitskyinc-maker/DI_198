@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>object1</title>
+</head>
+<body>
+    <h1>Objects in JavaScript</h1>
+    <script>    
+        let myObj = {
+            name : "John",
+            lastName : "Doe",
+            age : 25,
+            friends : ["Mark", "Lucie", "Ana"]
+        };
+
+        // Get all entries (key-value pairs)
+        let entries = Object.entries(myObj);
+
+        console.log(`Total Keys: ${entries.length}, Total Values: ${entries.length}`);
+
+        // Loop through and display each one
+        entries.forEach(([key, value], index) => {
+            // If the value is an array, we format it nicely as a string
+            let displayValue = Array.isArray(value) ? `["${value.join('", "')}"]` : value;
+            console.log(`The ${index + 1} key is : ${key} The ${index + 1} value is : ${displayValue}`);
+        });
+
+    </script>
+</body>
+</html>

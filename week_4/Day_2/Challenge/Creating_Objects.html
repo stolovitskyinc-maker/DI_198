@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Creating Objects</title>
+</head>
+<body>
+    <script>    
+        // 1. Define the Video class
+        class Video {
+            constructor(title, uploader, time) {
+                this.title = title;
+                this.uploader = uploader;
+                this.time = time; // Duration in seconds
+            }
+        
+            // 2. Define the watch() method
+            watch() {
+                console.log(`${this.uploader} watched all ${this.time} seconds of ${this.title}!`);
+            }
+        }
+
+        // 3. Instantiate the first Video instance and call watch()
+        const firstVideo = new Video("Learn JS in 10 Minutes", "CodeWizard", 600);
+        firstVideo.watch();
+
+        // 4. Instantiate a second Video instance with different values
+        const secondVideo = new Video("Cute Cat Compilation", "PetLover99", 120);
+        secondVideo.watch();
+
+
+        // --- BONUS SECTION ---
+
+        // 5. Best data structure for raw data: An array of objects
+        const videoDataList = [
+            { title: "Cooking the Perfect Steak", uploader: "ChefGordon", time: 450 },
+            { title: "Mechanical Keyboard Review", uploader: "TechTech", time: 900 },
+            { title: "Rain Sounds for Sleeping", uploader: "ZenNature", time: 3600 },
+            { title: "Lo-Fi Beats to Code To", uploader: "ChillVibes", time: 7200 },
+            { title: "Space X Launch Live", uploader: "CosmosNews", time: 1800 }
+        ];
+
+        // 6. Loop through the array to instantiate and execute the instances
+        const instantiatedVideos = videoDataList.map(data => {
+            // Create a new instance for each object in the raw data array
+            const videoInstance = new Video(data.title, data.uploader, data.time);
+
+            // Call the method to verify it works
+            videoInstance.watch();
+
+            // Return the instance to store it in our new array
+            return videoInstance;
+        });
+
+    </script>
+</body>
+</html>
