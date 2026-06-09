@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>POST Form Example</title>
+</head>
+<body>
+
+    <!-- Changed method to "POST" -->
+    <form action="#" method="POST">
+        <label for="name">Name:</label><br>
+        <input type="text" id="name" name="user_name"><br><br>
+
+        <label for="message">Message:</label><br>
+        <textarea id="message" name="user_message" rows="4" cols="30"></textarea><br><br>
+
+        <input type="submit" value="Send">
+    </form>
+
+</body>
+</html>
+
+<!-- Open DevTools: Right-click anywhere on your page and select Inspect (or press F12).Go to Network: Click on the Network tab at the top of the DevTools panel.Submit Form: Fill out the form and click Send.Select Request: Look at the list of network requests and click on the name of your file (e.g., index.html or #).View Payload:Click on the Payload tab (called Headers or Request in some older browser versions).Look under the Form Data section to see your submitted data formatted like this:user_name: Aliceuser_message: Hello world -->

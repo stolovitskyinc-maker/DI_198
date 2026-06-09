@@ -1,0 +1,25 @@
+{
+  "detail": "An amazing game!",
+  "characters": {
+    "mario": {
+      "description": "Small and jumpy. Likes princesses.",
+      "height": 10,
+      "weight": 3,
+      "speed": 12
+    },
+    "bowser": {
+      "description": "Big and green, Hates princesses.",
+      "height": 16,
+      "weight": 6,
+      "speed": 4
+    },
+    "princessPeach": {
+      "description": "Beautiful princess.",
+      "height": 12,
+      "weight": 2,
+      "speed": 2
+    }
+  }
+}
+
+// Open DevTools: Right-click your page, select Inspect, and click the Sources tab.Find Your Script: Open your JavaScript file from the left sidebar.Set a Breakpoint: Click on the line number next to console.log(prettyJson);. A blue or red marker will appear.Trigger the Code: Refresh your browser page. The script will freeze execution exactly at that line.Check the Values:Scope Panel: Look at the Scope window on the right side of DevTools. Under "Local", you will see both variables.Hovering: Hover your mouse cursor directly over the words standardJson and prettyJson in your code editor line.What you will see: standardJson looks like a dense string block, while prettyJson displays with line breaks (\n) and readable spaces.
