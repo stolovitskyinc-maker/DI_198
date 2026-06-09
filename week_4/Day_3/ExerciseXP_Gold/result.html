@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Submitted Results</title>
+</head>
+<body>
+
+    <!-- Target container for the DOM manipulation -->
+    <section id="displaySection">
+        <h2>Submitted Form Data:</h2>
+    </section>
+
+    <script>
+        // 1. Grab the query string from the current browser URL
+        const queryString = window.location.search;
+
+        // 2. Parse the parameters using URLSearchParams
+        const urlParams = new URLSearchParams(queryString);
+
+        // 3. Extract the values using the 'name' attributes from the form inputs
+        const firstName = urlParams.get('firstname');
+        const lastName = urlParams.get('lastname');
+
+        // 4. Get a reference to the <section> tag
+        const section = document.getElementById('displaySection');
+
+        // 5. Create new elements and append the data to the DOM
+        if (firstName && lastName) {
+            const nameParagraph = document.createElement('p');
+            nameParagraph.textContent = `First Name: ${firstName}`;
+
+            const lastNameParagraph = document.createElement('p');
+            lastNameParagraph.textContent = `Last Name: ${lastName}`;
+
+            section.appendChild(nameParagraph);
+            section.appendChild(lastNameParagraph);
+        } else {
+            section.insertAdjacentHTML('beforeend', '<p>No data submitted yet.</p>');
+        }
+    </script>
+
+</body>
+</html>
