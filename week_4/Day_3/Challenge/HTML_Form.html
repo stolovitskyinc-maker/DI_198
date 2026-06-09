@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Form to JSON DOM</title>
+</head>
+<body>
+
+    <!-- Simple Form -->
+    <form id="userForm">
+        <label for="firstName">First Name:</label><br>
+        <input type="text" id="firstName" required><br><br>
+
+        <label for="lastName">Last Name:</label><br>
+        <input type="text" id="lastName" required><br><br>
+
+        <button type="submit">Send</button>
+    </form>
+
+    <!-- Container where the JSON output will be appended -->
+    <h3>Output:</h3>
+    <pre id="output"></pre>
+
+    <script>
+        const form = document.getElementById('userForm');
+        const outputElement = document.getElementById('output');
+
+        form.addEventListener('submit', function(event) {
+            // Prevent the browser from refreshing the page on submit
+            event.preventDefault();
+
+            // Retrieve values from the inputs
+            const firstNameValue = document.getElementById('firstName').value;
+            const lastNameValue = document.getElementById('lastName').value;
+
+            // Create a plain JavaScript object
+            const formData = {
+                name: firstNameValue,
+                lastName: lastNameValue
+            };
+
+            // Convert the object into a JSON string
+            const jsonString = JSON.stringify(formData);
+
+            // Append the JSON text into the <pre> tag on the DOM
+            outputElement.textContent = jsonString;
+        });
+    </script>
+
+</body>
+</html>
