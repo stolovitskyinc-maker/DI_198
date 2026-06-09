@@ -4,18 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Advanced Random Quote Generator</title>
-    <style>
-        body { font-family: Arial, sans-serif; max-width: 600px; margin: 20px auto; padding: 20px; line-height: 1.6; }
-        section { border: 1px solid #ccc; padding: 15px; margin: 15px 0; min-height: 80px; border-radius: 5px; background: #f9f9f9; }
-        .quote-text { font-style: italic; font-size: 1.2rem; margin-bottom: 5px; }
-        .quote-author { font-weight: bold; color: #555; text-align: right; }
-        .btn-group { margin: 10px 0; display: flex; flex-wrap: wrap; gap: 8px; }
-        button { padding: 8px 12px; cursor: pointer; border-radius: 4px; border: 1px solid #999; background: #fff; }
-        button:hover { background: #eee; }
-        form { background: #eee; padding: 15px; margin: 15px 0; border-radius: 5px; }
-        input[type="text"] { width: 100%; padding: 8px; margin: 5px 0 10px; box-sizing: border-box; }
-        .nav-btn { background-color: #d1ecf1; }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
@@ -67,7 +56,19 @@
             { id: 0, author: "Albert Einstein", quote: "Life is like riding a bicycle. To keep your balance, you must keep moving.", likes: 0 },
             { id: 1, author: "Mark Twain", quote: "The secret of getting ahead is getting started.", likes: 0 },
             { id: 2, author: "Albert Einstein", quote: "Strive not to be a success, but rather to be of value.", likes: 0 },
-            { id: 3, author: "Oscar Wilde", quote: "Be yourself; everyone else is already taken.", likes: 0 }
+            { id: 3, author: "Oscar Wilde", quote: "Be yourself; everyone else is already taken.", likes: 0 },
+            { id: 4, author: "Steve Jobs", quote: "Your time is limited, so don't waste it living someone else's life.", likes: 0 },
+            { id: 5, author: "Walt Disney", quote: "The way to get started is to quit talking and begin doing.", likes: 0 },
+            { id: 6, author: "Maya Angelou", quote: "You will face many defeats in life, but never let yourself be defeated.", likes: 0 },
+            { id: 7, author: "Nelson Mandela", quote: "The greatest glory in living lies not in never falling, but in rising every time we fall.", likes: 0 },
+            { id: 8, author: "Steve Jobs", quote: "The only way to do great work is to love what you do.", likes: 0 },
+            { id: 9, author: "Eleanor Roosevelt", quote: "The future belongs to those who believe in the beauty of their dreams.", likes: 0 },
+            { id: 10, author: "Oprah Winfrey", quote: "If you look at what you have in life, you'll always have more.", likes: 0 },
+            { id: 11, author: "Franklin D. Roosevelt", quote: "The only limit to our realization of tomorrow will be our doubts of today.", likes: 0 },
+            { id: 12, author: "Aristotle", quote: "It is during our darkest moments that we must focus to see the light.", likes: 0 },
+            { id: 13, author: "Helen Keller", quote: "Many people have the wrong idea of what constitutes true happiness. It is not attained through self-gratification but through fidelity to a worthy purpose.", likes: 0 },
+            { id: 14, author: "Jane Goodall", quote: "What you do makes a difference, and you have to decide what kind of difference you want to make.", likes: 0 },
+            { id: 15, author: "Mark Twain", quote: "Twenty years from now you will be more disappointed by the things that you didn't do than by the ones you did do.", likes: 0 }
         ];
 
         let currentQuote = null;
