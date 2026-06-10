@@ -1,0 +1,138 @@
+/* Import fonts directly into CSS from your links */
+@import url('https://fonts.cdnfonts.com/css/robotaur');
+@import url('https://fonts.cdnfonts.com/css/akron-sans-nbp');
+
+/* General Page Setup */
+body {
+  margin: 0;
+  padding: 20px;
+  min-height: 100vh;
+  box-sizing: border-box;
+  
+  /* Background Image Integration */
+  background: url('https://static.vecteezy.com/system/resources/previews/068/771/399/non_2x/abstract-blue-circuit-board-technology-connected-lines-electronics-elements-computer-motherboard-chip-processor-digital-black-background-vector.jpg') no-repeat center center fixed;
+  background-size: cover;
+  background-color: #0b0f19;
+  color: #ffffff;
+}
+
+header {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+/* Header Text - Using 'Robotaur' font from your CDN link */
+h1 {
+  font-family: 'Robotaur', sans-serif;
+  font-size: clamp(2.2rem, 6vw, 4.2rem); 
+  letter-spacing: 6px;
+  margin-bottom: 25px;
+  text-transform: uppercase;
+  color: #00ffcc; 
+  text-shadow: 0 0 10px rgba(0, 255, 204, 0.4), 0 0 20px rgba(0, 255, 204, 0.2);
+}
+
+/* Modern & Sleek Input UI - Using 'Akron Sans NBP' font from your CDN link */
+#search-box {
+  font-family: 'Akron Sans NBP', sans-serif;
+  padding: 14px 25px;
+  font-size: 1.1rem;
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 30px;
+  width: 90%;
+  max-width: 450px;
+  outline: none;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+/* Focus State Glow Effect */
+#search-box:focus {
+  border-color: #00ffcc;
+  background: rgba(255, 255, 255, 0.12);
+  box-shadow: 0 0 15px rgba(0, 255, 204, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+#search-box::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* Fully Scalable, Responsive Card Container Grid */
+#robot-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 40px;
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Hexagonal Card Geometry & Outlines */
+.robot-card {
+  font-family: 'Akron Sans NBP', sans-serif;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(8px);
+  
+  /* Hard-cropped geometric hexagon boundary paths */
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  
+  /* Crisp black structural outlining layers that preserve the clipped angles */
+  filter: drop-shadow(0px 0px 1px #000000) drop-shadow(0px 0px 3px #000000);
+  
+  padding: 45px 25px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), background 0.3s ease;
+}
+
+/* Interactive Hover Response */
+.robot-card:hover {
+  transform: scale(1.05) translateY(-5px);
+  background: rgba(0, 255, 204, 0.12);
+}
+
+/* Inner Component Styling */
+.robot-card img {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  background: #121824;
+  border: 2px solid #000000;
+  margin-bottom: 12px;
+}
+
+.robot-card h2 {
+  font-size: 1.15rem;
+  font-weight: bold;
+  color: #ffffff;
+  margin: 5px 0;
+  text-transform: uppercase;
+}
+
+.robot-card .username {
+  font-size: 0.85rem;
+  color: #00ffcc;
+  margin: 0 0 8px 0;
+}
+
+.robot-card .email {
+  font-size: 0.75rem;
+  color: #cccccc;
+  word-break: break-all;
+  max-width: 90%;
+}
+
+/* No Match Fallback Message */
+.no-results {
+  font-family: 'Akron Sans NBP', sans-serif;
+  grid-column: 1 / -1;
+  text-align: center;
+  font-size: 1.4rem;
+  color: #ff4a4a;
+}
