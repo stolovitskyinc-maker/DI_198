@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  
+<script>
+// Function 1: Converts all words to uppercase if every item is a string
+function makeAllCaps(wordsArray) {
+  return new Promise((resolve, reject) => {
+    // Check if every single item in the array has a type of 'string'
+    const allStrings = wordsArray.every(item => typeof item === 'string');
+
+    if (allStrings) {
+      // Map through the array and uppercase each string
+      const uppercasedArray = wordsArray.map(word => word.toUpperCase());
+      resolve(uppercasedArray);
+    } else {
+      reject("Error: Not all items in the array are strings!");
+    }
+  });
+}
+
+// Function 2: Sorts an array alphabetically if it contains more than 4 items
+function sortWords(uppercasedArray) {
+  return new Promise((resolve, reject) => {
+    // Check if array length is strictly greater than 4
+    if (uppercasedArray.length > 4) {
+      // Create a shallow copy using slice() before sorting to avoid mutating the original array
+      const sortedArray = uppercasedArray.slice().sort();
+      resolve(sortedArray);
+    } else {
+      reject("Error: Array length must be bigger than 4 items to sort!");
+    }
+  });
+}
+
+
+
+// Test Case 1: Fails at makeAllCaps() because of the number 1
+makeAllCaps([1, "pear", "banana"])
+  .then((arr) => sortWords(arr))
+  .then((result) => console.log(result))
+  .catch(error => console.log(error)); 
+  // Output: "Error: Not all items in the array are strings!"
+
+// Test Case 2: Passes makeAllCaps() but fails at sortWords() because length is 3 (not > 4)
+makeAllCaps(["apple", "pear", "banana"])
+  .then((arr) => sortWords(arr))
+  .then((result) => console.log(result))
+  .catch(error => console.log(error)); 
+  // Output: "Error: Array length must be bigger than 4 items to sort!"
+
+// Test Case 3: Passes both validations successfully
+makeAllCaps(["apple", "pear", "banana", "melon", "kiwi"])
+  .then((arr) => sortWords(arr))
+  .then((result) => console.log(result))
+  .catch(error => console.log(error)); 
+  // Output: ["APPLE", "BANANA", "KIWI", "MELON", "PEAR"]</script>
+</body>
+</html>
