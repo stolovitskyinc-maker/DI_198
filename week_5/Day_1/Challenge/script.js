@@ -6,19 +6,19 @@ const clearAllBtn = document.getElementById("clear-all-btn");
 
 // Handle form submission
 form.addEventListener("submit", async (event) => {
-  event.preventDefault(); // Stop page from refreshing
+  event.preventDefault(); 
   const category = searchInput.value.trim();
   
   if (category) {
     await fetchRandomGif(category);
-    searchInput.value = ""; // Clear the input field
+    searchInput.value = ""; 
   }
 });
 
-// Fetch function using async/await and GIPHY Random API
+// Fetch function using async/await and corrected GIPHY Random API URL
 async function fetchRandomGif(tag) {
-  // Using the /v1/gifs/random endpoint with tag filter parameter
-  const url = `https://giphy.com{API_KEY}&tag=${tag}&rating=g`;
+  // FIXED: Corrected the parameter key naming and base path mapping string structure
+  const url = `https://api.giphy.com/v1/gifs/random?api_key=${API_KEY}&tag=${tag}`;
 
   try {
     const response = await fetch(url);
@@ -49,34 +49,29 @@ async function fetchRandomGif(tag) {
 
 // Function to construct and append items to the DOM
 function appendGifToDom(url, categoryName) {
-  // Create wrapper element card
   const gifCard = document.createElement("div");
   gifCard.classList.add("gif-card");
 
-  // Create image tag element
   const imgElement = document.createElement("img");
   imgElement.src = url;
   imgElement.alt = `${categoryName} gif`;
 
-  // Create unique individual delete button
   const deleteBtn = document.createElement("button");
   deleteBtn.classList.add("delete-btn");
   deleteBtn.textContent = "DELETE";
 
-  // Individual Deletion logic closure
   deleteBtn.addEventListener("click", () => {
     gifCard.remove();
   });
 
-  // Assemble the card layout components together
   gifCard.appendChild(imgElement);
   gifCard.appendChild(deleteBtn);
-
-  // Push inside the layout container element grid wrapper on screen
   gifContainer.appendChild(gifCard);
 }
 
-// Mass clear button operation functionality handler
+// OPTIMIZED: Mass clear button handles high scales without full string re-parsing
 clearAllBtn.addEventListener("click", () => {
-  gifContainer.innerHTML = ""; // Wipes out all children elements immediately
+  while (gifContainer.firstChild) {
+    gifContainer.removeChild(gifContainer.firstChild);
+  }
 });
