@@ -1,3 +1,6 @@
+// Centralized API Base URL configuration
+const BASE_API_URL = "https://www.swapi.tech/api";
+
 // 1. Retrieve elements from the DOM
 const fetchBtn = document.getElementById('fetch-btn');
 const loadingDiv = document.getElementById('loading');
@@ -11,7 +14,10 @@ const charGender = document.getElementById('char-gender');
 const charBirth = document.getElementById('char-birth');
 const charHomeworld = document.getElementById('char-homeworld');
 
-// Helper to manage UI visibility states
+// Local cache memory to avoid duplicate planet network calls
+const homeworldCache = {};
+
+// UI State Controller
 function setUIState(state) {
     loadingDiv.classList.add('hidden');
     errorDiv.classList.add('hidden');
@@ -22,45 +28,64 @@ function setUIState(state) {
     if (state === 'success') cardDiv.classList.remove('hidden');
 }
 
-// 2. Get data from the API via AJAX
+// 2. Optimized AJAX Request Function
 async function getCharacterData() {
     setUIState('loading');
     
-    // Generate a random ID between 1 and 83
-    const randomId = Math.floor(Math.random() * 83) + 1;
-    const characterUrl = `https://swapi.tech{randomId}`;
+    // Array of valid character IDs to avoid hitting missing indexes (404s)
+    const validIds = [
+        1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 18, 19, 20, 21, 22, 23, 24, 25, 26, 
+        27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 
+        50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 
+        73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83
+    ];
+    
+    const randomIdx = Math.floor(Math.random() * validIds.length);
+    const selectedId = validIds[randomIdx];
+    
+    // ATTACHED HERE: Concatenating the base URL with the resource endpoint
+    const characterUrl = `${BASE_API_URL}/people/${selectedId}`;
 
     try {
         const response = await fetch(characterUrl);
-        if (!response.ok) throw new Error(`Character ID ${randomId} not found.`);
+        
+        if (!response.ok) {
+            throw new Error(`Server returned status ${response.status} for Character ID ${selectedId}`);
+        }
         
         const result = await response.json();
         const character = result.result.properties;
 
-        // Fetch homeworld name from its specific URL
+        // Fetch homeworld utilizing the cache layer
         const homeworldName = await getHomeworldName(character.homeworld);
         
-        // 3. Display the info on the DOM
+        // 3. Render content safely
         displayCharacter(character, homeworldName);
     } catch (err) {
-        errorText.innerText = `Error: ${err.message}`;
+        errorText.innerText = `Fetch Error: ${err.message}`;
         setUIState('error');
     }
 }
 
-// Helper to fetch the Homeworld name string instead of leaving it as a URL
+// Optimized caching homeworld fetcher
 async function getHomeworldName(url) {
+    if (homeworldCache[url]) {
+        return homeworldCache[url];
+    }
+
     try {
         const response = await fetch(url);
         if (!response.ok) return "Unknown";
         const data = await response.json();
-        return data.result.properties.name;
+        const name = data.result.properties.name;
+        
+        homeworldCache[url] = name;
+        return name;
     } catch {
         return "Unknown";
     }
 }
 
-// Populates the DOM nodes with data
 function displayCharacter(char, homeworld) {
     charName.innerText = char.name;
     charHeight.innerText = char.height;
@@ -71,5 +96,4 @@ function displayCharacter(char, homeworld) {
     setUIState('success');
 }
 
-// Event Listener for the action button
 fetchBtn.addEventListener('click', getCharacterData);
