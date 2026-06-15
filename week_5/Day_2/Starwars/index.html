@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Star Wars Character Finder</title>
+    <!-- FontAwesome for Loading Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container">
+        <h1>Star Wars Character Generator</h1>
+        <button id="fetch-btn">Find Character</button>
+
+        <div id="display-container">
+            <!-- Loading Message -->
+            <div id="loading" class="hidden">
+                <i class="fa-solid fa-spinner fa-spin fa-3x"></i>
+                <p>Loading Character...</p>
+            </div>
+
+            <!-- Error Message -->
+            <div id="error" class="hidden">
+                <i class="fa-solid fa-circle-exclamation fa-3x"></i>
+                <p id="error-text">Oh no! Something went wrong.</p>
+            </div>
+
+            <!-- Character Data Content -->
+            <div id="character-card" class="hidden">
+                <h2 id="char-name"></h2>
+                <p><strong>Height:</strong> <span id="char-height"></span> cm</p>
+                <p><strong>Gender:</strong> <span id="char-gender"></span></p>
+                <p><strong>Birth Year:</strong> <span id="char-birth"></span></p>
+                <p><strong>Home World:</strong> <span id="char-homeworld"></span></p>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
