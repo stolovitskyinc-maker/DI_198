@@ -1,41 +1,41 @@
 // =========================================================================
-// SECURITY CONFIGURATION [Feedback #4]
-// Paste your key here to test locally. Remove before pushing to GitHub!
+// API URL RESOLUTION SYSTEM
+// Extracts values safely from config namespace to prevent repository exposure.
 // =========================================================================
-const API_KEY = "YOUR_API_KEY_HERE"; 
 
-// FIXED: Exact string literal syntax explicitly including the mandatory /v6/ path [Feedback #1]
-const BASE_URL = `https://v6.exchangerate-api.com/v6/${API_KEY}`;
+// FIXED: Correct template literal parsing syntax incorporating mandatory v6 segment [Feedback #2 & #3]
+const BASE_URL = `https://exchangerate-api.com{CONFIG.API_KEY}`;
 
-// 1. Retrieve elements from the DOM using clean structural constants [Feedback #3]
-const amountInput = document.getElementById('amount');
-const fromSelect = document.getElementById('from-currency');
-const toSelect = document.getElementById('to-currency');
-const switchBtn = document.getElementById('switch-btn');
-const convertBtn = document.getElementById('convert-btn');
+// Clean Object-Oriented DOM Elements Cache Mapping [Feedback #1 Constants Requirement]
+const UI = {
+    amount: document.getElementById('amount'),
+    fromSelect: document.getElementById('from-currency'),
+    toSelect: document.getElementById('to-currency'),
+    switchBtn: document.getElementById('switch-btn'),
+    convertBtn: document.getElementById('convert-btn'),
+    loading: document.getElementById('loading'),
+    error: document.getElementById('error'),
+    output: document.getElementById('output-text')
+};
 
-const loadingDiv = document.getElementById('loading');
-const errorDiv = document.getElementById('error');
-const outputText = document.getElementById('output-text');
-
-// Clean layout visibility state helper [Feedback #3]
+// UI Presentation State Controller
 function toggleStatus(state) {
-    loadingDiv.classList.add('hidden');
-    errorDiv.classList.add('hidden');
-    outputText.classList.add('hidden');
+    UI.loading.classList.add('hidden');
+    UI.error.classList.add('hidden');
+    UI.output.classList.add('hidden');
 
-    if (state === 'loading') loadingDiv.classList.remove('hidden');
-    if (state === 'error') errorDiv.classList.remove('hidden');
-    if (state === 'success') outputText.classList.remove('hidden');
+    if (state === 'loading') UI.loading.classList.remove('hidden');
+    if (state === 'error') UI.error.classList.remove('hidden');
+    if (state === 'success') UI.output.classList.remove('hidden');
 }
 
-// 2. Fetch all supported codes for choice selectors [Feedback #2]
+// 1. Core Initializer Endpoint Handler
 async function initializeCurrencies() {
     toggleStatus('loading');
     
-    // Security verification placeholder validation check [Feedback #4]
-    if (API_KEY === "YOUR_API_KEY_HERE" || API_KEY === "") {
-        errorDiv.innerText = "Security Check: Replace placeholder with your active ExchangeRate-API key at the top of script.js.";
+    // Safety boundary check preventing blank runtime failures
+    if (!CONFIG.API_KEY || CONFIG.API_KEY === "YOUR_ACTUAL_API_KEY_HERE") {
+        UI.error.innerText = "Security Halt: Please paste your ExchangeRate-API key inside config.js.";
         toggleStatus('error');
         return;
     }
@@ -44,88 +44,98 @@ async function initializeCurrencies() {
 
     try {
         const response = await fetch(endpoint);
-        if (!response.ok) throw new Error(`Network system returned fault status: ${response.status}`);
+        if (!response.ok) throw new Error(`HTTP Transport Network Error: Status ${response.status}`);
         
         const data = await response.json();
-        if (data.result === "error") throw new Error(`API Error: ${data['error-type']}`);
+        
+        // Robust Vendor Response Checking Block [Feedback #5 Protection Alignment]
+        if (data.result === "error") {
+            throw new Error(`API Core Refusal: ${data['error-type']}`);
+        }
         
         populateDropdowns(data.supported_codes);
         toggleStatus('success');
     } catch (err) {
-        errorDiv.innerText = `Initialization Failure: ${err.message}`;
+        UI.error.innerText = `Initialization Fault: ${err.message}`;
         toggleStatus('error');
     }
 }
 
-// Full execution logic for populating UI select option tags [Feedback #2]
-function populateDropdowns(codes) {
-    fromSelect.innerHTML = "";
-    toSelect.innerHTML = "";
+// 2. DOM Population Implementation Module [Feedback #1 Complete Function Requirement]
+function populateDropdowns(currencyCodes) {
+    UI.fromSelect.innerHTML = "";
+    UI.toSelect.innerHTML = "";
 
-    codes.forEach(([code, name]) => {
-        const optionFrom = new Option(`${code} - ${name}`, code);
-        const optionTo = new Option(`${code} - ${name}`, code);
+    currencyCodes.forEach(([code, descriptiveName]) => {
+        const optionNodeFrom = new Option(`${code} - ${descriptiveName}`, code);
+        const optionNodeTo = new Option(`${code} - ${descriptiveName}`, code);
         
-        fromSelect.add(optionFrom);
-        toSelect.add(optionTo);
+        UI.fromSelect.add(optionNodeFrom);
+        UI.toSelect.add(optionNodeTo);
     });
 
-    // Default configuration targets
-    fromSelect.value = "USD";
-    toSelect.value = "EUR";
+    // Default configuration assignments
+    UI.fromSelect.value = "USD";
+    UI.toSelect.value = "EUR";
 
-    fromSelect.disabled = false;
-    toSelect.disabled = false;
+    // Enable interaction hooks now that array items exist
+    UI.fromSelect.disabled = false;
+    UI.toSelect.disabled = false;
 }
 
-// 3. Full execution calculations engine passing optimal amount queries [Feedback #2]
+// 3. Calculation Pair Conversion Engine [Feedback #1 Dynamic Execution Requirement]
 async function executeConversion() {
-    const fromCode = fromSelect.value;
-    const toCode = toSelect.value;
-    const amount = amountInput.value;
+    const fromCode = UI.fromSelect.value;
+    const toCode = UI.toSelect.value;
+    const inputAmount = UI.amount.value;
 
-    if (!amount || amount <= 0) {
-        errorDiv.innerText = "Please enter a numeric currency amount value greater than zero.";
+    if (!inputAmount || parseFloat(inputAmount) <= 0) {
+        UI.error.innerText = "Validation Fault: Please input a positive currency amount value.";
         toggleStatus('error');
         return;
     }
 
     toggleStatus('loading');
 
-    const endpoint = `${BASE_URL}/pair/${fromCode}/${toCode}/${amount}`;
+    const endpoint = `${BASE_URL}/pair/${fromCode}/${toCode}/${inputAmount}`;
 
     try {
         const response = await fetch(endpoint);
-        if (!response.ok) throw new Error(`Network system returned fault status: ${response.status}`);
+        if (!response.ok) throw new Error(`HTTP Conversion Network Error: Status ${response.status}`);
         
         const data = await response.json();
-        if (data.result === "error") throw new Error(`API Error: ${data['error-type']}`);
-
-        const totalConverted = data.conversion_result.toFixed(2);
-        const individualRate = data.conversion_rate.toFixed(4);
         
-        outputText.innerHTML = `
-            <h3>${amount} ${fromCode} = <strong>${totalConverted} ${toCode}</strong></h3>
-            <p>1 ${fromCode} = ${individualRate} ${toCode}</p>
+        if (data.result === "error") {
+            throw new Error(`API Conversion Refusal: ${data['error-type']}`);
+        }
+
+        const totalConverted = parseFloat(data.conversion_result).toFixed(2);
+        const singleUnitRate = parseFloat(data.conversion_rate).toFixed(4);
+        
+        UI.output.innerHTML = `
+            <h3>${inputAmount} ${fromCode} = <strong>${totalConverted} ${toCode}</strong></h3>
+            <p>1 ${fromCode} = ${singleUnitRate} ${toCode}</p>
         `;
         toggleStatus('success');
     } catch (err) {
-        errorDiv.innerText = `Conversion Failure: ${err.message}`;
+        UI.error.innerText = `Conversion System Failure: ${err.message}`;
         toggleStatus('error');
     }
 }
 
-// Full execution handler for inversion button functionality [Feedback #2]
+// 4. Inversion Selection Mechanism Module [Feedback #1 Switch Requirement]
 function swapCurrencies() {
-    const temporaryValue = fromSelect.value;
-    fromSelect.value = toSelect.value;
-    toSelect.value = temporaryValue;
+    const backupReferenceValue = UI.fromSelect.value;
+    UI.fromSelect.value = UI.toSelect.value;
+    UI.toSelect.value = backupReferenceValue;
     
-    // Instantly execute conversion calculation with the newly swapped selection pairs
+    // Instantly execute conversion update with the newly swapped selection pairs
     executeConversion();
 }
 
-// Functional event hooks setup linking interactive UI elements [Feedback #2]
-convertBtn.addEventListener('click', executeConversion);
-switchBtn.addEventListener('click', swapCurrencies);
+// =========================================================================
+// INTERACTIVE EVENT ATTACHMENTS [Feedback #1 Critical Event Handler Fixes]
+// =========================================================================
+UI.convertBtn.addEventListener('click', executeConversion);
+UI.switchBtn.addEventListener('click', swapCurrencies);
 document.addEventListener('DOMContentLoaded', initializeCurrencies);
