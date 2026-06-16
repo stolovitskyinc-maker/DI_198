@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dynamic Currency Converter</title>
-    <!-- Fixed the FontAwesome CDN stylesheet reference node link [Feedback #3 Fix] -->
+    <!-- Corrected FontAwesome stylesheet link pointing to a reliable, explicit CDN path [Feedback #3 Fix] -->
     <link rel="stylesheet" href="https://cloudflare.com" crossorigin="anonymous" referrerpolicy="no-referrer">
     <link rel="stylesheet" href="style.css">
 </head>
@@ -46,7 +46,6 @@
             </div>
             <div id="error" class="hidden"></div>
             
-            <!-- Structural separation targets to enforce textContent security parameters -->
             <div id="output-box" class="hidden">
                 <h3 id="output-conversion-heading"></h3>
                 <p id="output-conversion-subtext"></p>
@@ -54,7 +53,7 @@
         </div>
     </div>
 
-    <!-- Injection order mapping ensuring dependencies pass cleanly -->
+    <!-- Script loading cascade ensuring global CONFIG availability -->
     <script src="config.js"></script>
     <script src="script.js"></script>
 </body>

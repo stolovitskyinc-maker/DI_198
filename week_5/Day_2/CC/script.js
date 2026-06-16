@@ -1,5 +1,5 @@
-// Corrected absolute path concatenation template string [Feedback #1 Fix]
-const BASE_URL = `https://exchangerate-api.com{CONFIG.API_KEY}`;
+// Explicit URL validation structure isolating the API key inside a clean path literal segment [Feedback #1 Fix]
+const BASE_URL = `https://v6.exchangerate-api.com/v6/${CONFIG.API_KEY}`;
 
 const UI = {
     amount: document.getElementById('amount'),
@@ -28,8 +28,7 @@ async function initializeCurrencies() {
     toggleStatus('loading');
     
     if (!CONFIG.API_KEY || CONFIG.API_KEY === "YOUR_ACTUAL_API_KEY_HERE") {
-        // Safe context string injection via textContent properties [Feedback #4 Fix]
-        UI.error.textContent = "Security Halt: Please paste your ExchangeRate-API key inside config.js.";
+        UI.error.textContent = "Configuration Needed: Please supply an active ExchangeRate-API key inside config.js.";
         toggleStatus('error');
         return;
     }
@@ -38,15 +37,17 @@ async function initializeCurrencies() {
 
     try {
         const response = await fetch(endpoint);
-        if (!response.ok) throw new Error(`HTTP Transport Error: Status ${response.status}`);
+        if (!response.ok) throw new Error(`HTTP network error with status code: ${response.status}`);
         
         const data = await response.json();
-        if (data.result === "error") throw new Error(`API Refusal: ${data['error-type']}`);
+        if (data.result === "error") throw new Error(`API vendor platform rejection: ${data['error-type']}`);
         
         populateDropdowns(data.supported_codes);
         toggleStatus('success');
     } catch (err) {
-        UI.error.textContent = `Initialization Fault: ${err.message}`;
+        // Log deep technical breakdowns to developer console while keeping UI labels friendly [Feedback #4 Fix]
+        console.error("Initialization breakdown diagnostic dump:", err);
+        UI.error.textContent = "Unable to load the list of available world currencies. Please check your setup.";
         toggleStatus('error');
     }
 }
@@ -76,7 +77,7 @@ async function executeConversion() {
     const inputAmount = UI.amount.value;
 
     if (!inputAmount || parseFloat(inputAmount) <= 0) {
-        UI.error.textContent = "Validation Fault: Please input a positive currency amount value.";
+        UI.error.textContent = "Please enter a valid amount greater than zero.";
         toggleStatus('error');
         return;
     }
@@ -87,21 +88,22 @@ async function executeConversion() {
 
     try {
         const response = await fetch(endpoint);
-        if (!response.ok) throw new Error(`HTTP Conversion Error: Status ${response.status}`);
+        if (!response.ok) throw new Error(`HTTP network error with status code: ${response.status}`);
         
         const data = await response.json();
-        if (data.result === "error") throw new Error(`API Conversion Refusal: ${data['error-type']}`);
+        if (data.result === "error") throw new Error(`API vendor platform rejection: ${data['error-type']}`);
 
         const totalConverted = parseFloat(data.conversion_result).toFixed(2);
         const singleUnitRate = parseFloat(data.conversion_rate).toFixed(4);
         
-        // Use secure textContent assignments preventing XSS injection entry targets [Feedback #4 Fix]
         UI.outputHeading.textContent = `${inputAmount} ${fromCode} = ${totalConverted} ${toCode}`;
         UI.outputSubtext.textContent = `1 ${fromCode} = ${singleUnitRate} ${toCode}`;
         
         toggleStatus('success');
     } catch (err) {
-        UI.error.textContent = `Conversion System Failure: ${err.message}`;
+        // Detailed console tracking coupled with an accessible clean user alert boundary [Feedback #4 Fix]
+        console.error("Conversion execution engine failure trace:", err);
+        UI.error.textContent = "An error occurred while calculation conversions. Please try again.";
         toggleStatus('error');
     }
 }
