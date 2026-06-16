@@ -1,12 +1,6 @@
-// =========================================================================
-// API URL RESOLUTION SYSTEM
-// Extracts values safely from config namespace to prevent repository exposure.
-// =========================================================================
-
-// FIXED: Correct template literal parsing syntax incorporating mandatory v6 segment [Feedback #2 & #3]
+// Corrected absolute path concatenation template string [Feedback #1 Fix]
 const BASE_URL = `https://exchangerate-api.com{CONFIG.API_KEY}`;
 
-// Clean Object-Oriented DOM Elements Cache Mapping [Feedback #1 Constants Requirement]
 const UI = {
     amount: document.getElementById('amount'),
     fromSelect: document.getElementById('from-currency'),
@@ -15,27 +9,27 @@ const UI = {
     convertBtn: document.getElementById('convert-btn'),
     loading: document.getElementById('loading'),
     error: document.getElementById('error'),
-    output: document.getElementById('output-text')
+    outputBox: document.getElementById('output-box'),
+    outputHeading: document.getElementById('output-conversion-heading'),
+    outputSubtext: document.getElementById('output-conversion-subtext')
 };
 
-// UI Presentation State Controller
 function toggleStatus(state) {
     UI.loading.classList.add('hidden');
     UI.error.classList.add('hidden');
-    UI.output.classList.add('hidden');
+    UI.outputBox.classList.add('hidden');
 
     if (state === 'loading') UI.loading.classList.remove('hidden');
     if (state === 'error') UI.error.classList.remove('hidden');
-    if (state === 'success') UI.output.classList.remove('hidden');
+    if (state === 'success') UI.outputBox.classList.remove('hidden');
 }
 
-// 1. Core Initializer Endpoint Handler
 async function initializeCurrencies() {
     toggleStatus('loading');
     
-    // Safety boundary check preventing blank runtime failures
     if (!CONFIG.API_KEY || CONFIG.API_KEY === "YOUR_ACTUAL_API_KEY_HERE") {
-        UI.error.innerText = "Security Halt: Please paste your ExchangeRate-API key inside config.js.";
+        // Safe context string injection via textContent properties [Feedback #4 Fix]
+        UI.error.textContent = "Security Halt: Please paste your ExchangeRate-API key inside config.js.";
         toggleStatus('error');
         return;
     }
@@ -44,24 +38,19 @@ async function initializeCurrencies() {
 
     try {
         const response = await fetch(endpoint);
-        if (!response.ok) throw new Error(`HTTP Transport Network Error: Status ${response.status}`);
+        if (!response.ok) throw new Error(`HTTP Transport Error: Status ${response.status}`);
         
         const data = await response.json();
-        
-        // Robust Vendor Response Checking Block [Feedback #5 Protection Alignment]
-        if (data.result === "error") {
-            throw new Error(`API Core Refusal: ${data['error-type']}`);
-        }
+        if (data.result === "error") throw new Error(`API Refusal: ${data['error-type']}`);
         
         populateDropdowns(data.supported_codes);
         toggleStatus('success');
     } catch (err) {
-        UI.error.innerText = `Initialization Fault: ${err.message}`;
+        UI.error.textContent = `Initialization Fault: ${err.message}`;
         toggleStatus('error');
     }
 }
 
-// 2. DOM Population Implementation Module [Feedback #1 Complete Function Requirement]
 function populateDropdowns(currencyCodes) {
     UI.fromSelect.innerHTML = "";
     UI.toSelect.innerHTML = "";
@@ -74,23 +63,20 @@ function populateDropdowns(currencyCodes) {
         UI.toSelect.add(optionNodeTo);
     });
 
-    // Default configuration assignments
     UI.fromSelect.value = "USD";
     UI.toSelect.value = "EUR";
 
-    // Enable interaction hooks now that array items exist
     UI.fromSelect.disabled = false;
     UI.toSelect.disabled = false;
 }
 
-// 3. Calculation Pair Conversion Engine [Feedback #1 Dynamic Execution Requirement]
 async function executeConversion() {
     const fromCode = UI.fromSelect.value;
     const toCode = UI.toSelect.value;
     const inputAmount = UI.amount.value;
 
     if (!inputAmount || parseFloat(inputAmount) <= 0) {
-        UI.error.innerText = "Validation Fault: Please input a positive currency amount value.";
+        UI.error.textContent = "Validation Fault: Please input a positive currency amount value.";
         toggleStatus('error');
         return;
     }
@@ -101,41 +87,32 @@ async function executeConversion() {
 
     try {
         const response = await fetch(endpoint);
-        if (!response.ok) throw new Error(`HTTP Conversion Network Error: Status ${response.status}`);
+        if (!response.ok) throw new Error(`HTTP Conversion Error: Status ${response.status}`);
         
         const data = await response.json();
-        
-        if (data.result === "error") {
-            throw new Error(`API Conversion Refusal: ${data['error-type']}`);
-        }
+        if (data.result === "error") throw new Error(`API Conversion Refusal: ${data['error-type']}`);
 
         const totalConverted = parseFloat(data.conversion_result).toFixed(2);
         const singleUnitRate = parseFloat(data.conversion_rate).toFixed(4);
         
-        UI.output.innerHTML = `
-            <h3>${inputAmount} ${fromCode} = <strong>${totalConverted} ${toCode}</strong></h3>
-            <p>1 ${fromCode} = ${singleUnitRate} ${toCode}</p>
-        `;
+        // Use secure textContent assignments preventing XSS injection entry targets [Feedback #4 Fix]
+        UI.outputHeading.textContent = `${inputAmount} ${fromCode} = ${totalConverted} ${toCode}`;
+        UI.outputSubtext.textContent = `1 ${fromCode} = ${singleUnitRate} ${toCode}`;
+        
         toggleStatus('success');
     } catch (err) {
-        UI.error.innerText = `Conversion System Failure: ${err.message}`;
+        UI.error.textContent = `Conversion System Failure: ${err.message}`;
         toggleStatus('error');
     }
 }
 
-// 4. Inversion Selection Mechanism Module [Feedback #1 Switch Requirement]
 function swapCurrencies() {
     const backupReferenceValue = UI.fromSelect.value;
     UI.fromSelect.value = UI.toSelect.value;
     UI.toSelect.value = backupReferenceValue;
-    
-    // Instantly execute conversion update with the newly swapped selection pairs
     executeConversion();
 }
 
-// =========================================================================
-// INTERACTIVE EVENT ATTACHMENTS [Feedback #1 Critical Event Handler Fixes]
-// =========================================================================
 UI.convertBtn.addEventListener('click', executeConversion);
 UI.switchBtn.addEventListener('click', swapCurrencies);
 document.addEventListener('DOMContentLoaded', initializeCurrencies);

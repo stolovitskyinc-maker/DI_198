@@ -112,12 +112,13 @@ input:focus, select:focus {
     padding-top: 20px;
 }
 
-#output-text h3 {
+#output-box h3 {
     margin: 0 0 5px 0;
     font-size: 22px;
+    color: #4caf50;
 }
 
-#output-text p {
+#output-box p {
     margin: 0;
     color: #b0bec5;
     font-size: 14px;

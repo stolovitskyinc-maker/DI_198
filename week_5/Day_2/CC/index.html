@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dynamic Currency Converter</title>
-    <!-- FontAwesome for visual loading feedback status anchors -->
-    <link rel="stylesheet" href="https://cloudflare.com">
+    <!-- Fixed the FontAwesome CDN stylesheet reference node link [Feedback #3 Fix] -->
+    <link rel="stylesheet" href="https://cloudflare.com" crossorigin="anonymous" referrerpolicy="no-referrer">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -26,7 +26,6 @@
                 </select>
             </div>
 
-            <!-- Switch Button Requirement -->
             <button id="switch-btn" title="Swap Currencies">
                 <i class="fa-solid fa-arrow-right-arrow-left"></i>
             </button>
@@ -46,11 +45,16 @@
                 <i class="fa-solid fa-spinner fa-spin"></i> Fetching Rates...
             </div>
             <div id="error" class="hidden"></div>
-            <div id="output-text"></div>
+            
+            <!-- Structural separation targets to enforce textContent security parameters -->
+            <div id="output-box" class="hidden">
+                <h3 id="output-conversion-heading"></h3>
+                <p id="output-conversion-subtext"></p>
+            </div>
         </div>
     </div>
 
-    <!-- Configuration goes first to expose key values safely -->
+    <!-- Injection order mapping ensuring dependencies pass cleanly -->
     <script src="config.js"></script>
     <script src="script.js"></script>
 </body>
