@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Currency Converter</title>
-    <!-- FontAwesome for the loading icon -->
+    <title>Dynamic Currency Converter</title>
+    <!-- FontAwesome for visual loading feedback status anchors -->
     <link rel="stylesheet" href="https://cloudflare.com">
     <link rel="stylesheet" href="style.css">
 </head>
@@ -13,13 +13,11 @@
     <div class="converter-box">
         <h1>Currency Converter</h1>
         
-        <!-- Input Form Control -->
         <div class="input-group">
             <label for="amount">Amount</label>
-            <input type="number" id="amount" value="1.00" min="0" step="0.01">
+            <input type="number" id="amount" value="1.00" min="0.01" step="0.01">
         </div>
 
-        <!-- Select Control Elements -->
         <div class="selection-row">
             <div class="dropdown-group">
                 <label for="from-currency">From</label>
@@ -28,7 +26,7 @@
                 </select>
             </div>
 
-            <!-- Bonus Feature: Switch Button -->
+            <!-- Switch Button Requirement -->
             <button id="switch-btn" title="Swap Currencies">
                 <i class="fa-solid fa-arrow-right-arrow-left"></i>
             </button>
@@ -43,7 +41,6 @@
 
         <button id="convert-btn">Convert</button>
 
-        <!-- Status & Results Panels -->
         <div id="result-container">
             <div id="loading" class="hidden">
                 <i class="fa-solid fa-spinner fa-spin"></i> Fetching Rates...
@@ -53,6 +50,8 @@
         </div>
     </div>
 
+    <!-- Configuration goes first to expose key values safely -->
+    <script src="config.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
