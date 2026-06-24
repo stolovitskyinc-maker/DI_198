@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌟 Ultimate Emoji Guessing Game</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            text-align: center;
+            max-width: 450px;
+            width: 100%;
+        }
+        .emoji-display {
+            font-size: 80px;
+            margin: 20px 0;
+            animation: bounce 0.5s ease;
+        }
+        .score-board {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #4a5568;
+            margin-bottom: 15px;
+        }
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin: 20px 0;
+        }
+        .btn-option {
+            background-color: #edf2f7;
+            border: 2px solid #cbd5e0;
+            padding: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .btn-option:hover {
+            background-color: #3182ce;
+            color: white;
+            border-color: #3182ce;
+            transform: translateY(-2px);
+        }
+        .feedback {
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-top: 15px;
+            min-height: 25px;
+        }
+        .correct { color: #38a169; }
+        .wrong { color: #e53e3e; }
+        .leaderboard-box {
+            margin-top: 25px;
+            border-top: 2px solid #edf2f7;
+            padding-top: 15px;
+            text-align: left;
+        }
+        .leaderboard-list {
+            list-style: none;
+            padding: 0;
+            margin: 5px 0 0 0;
+        }
+        .leaderboard-list li {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px 0;
+            border-bottom: 1px dashed #e2e8f0;
+        }
+        input[type="text"] {
+            padding: 8px;
+            border-radius: 6px;
+            border: 1px solid #cbd5e0;
+            margin-bottom: 10px;
+            width: 80%;
+        }
+        @keyframes bounce {
+            0% { transform: scale(0.3); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>👾 Emoji Guesser!</h1>
+    
+    <label for="username">Player Name:</label><br>
+    <input type="text" id="username" value="GuestPlayer" placeholder="Enter name for leaderboard"><br>
+
+    <div class="score-board">🔥 Current Score: <span id="score-val">0</span></div>
+    
+    <div class="emoji-display" id="emoji-target">❓</div>
+
+    <form id="game-form" onsubmit="event.preventDefault();">
+        <div class="options-grid" id="options-container">
+            <!-- Options populated by JS Fetch loop -->
+        </div>
+    </form>
+
+    <div class="feedback" id="feedback-msg"></div>
+
+    <div class="leaderboard-box">
+        <h3>🏆 Leaderboard Top 5</h3>
+        <ul class="leaderboard-list" id="leaderboard-data">
+            <!-- Populated via API -->
+        </ul>
+    </div>
+</div>
+
+<script>
+    const emojiTarget = document.getElementById('emoji-target');
+    const optionsContainer = document.getElementById('options-container');
+    const scoreVal = document.getElementById('score-val');
+    const feedbackMsg = document.getElementById('feedback-msg');
+    const leaderboardData = document.getElementById('leaderboard-data');
+    const usernameInput = document.getElementById('username');
+
+    // Fetch a new question from the Express API
+    async function loadNextQuestion() {
+        feedbackMsg.className = 'feedback';
+        
+        try {
+            const response = await fetch('/api/game/question');
+            const data = await response.json();
+
+            // Render elements
+            emojiTarget.innerText = data.emoji;
+            scoreVal.innerText = data.score;
+            optionsContainer.innerHTML = '';
+
+            // Populate multiple choice form options
+            data.options.forEach(option => {
+                const button = document.createElement('button');
+                button.type = 'button';
+                button.className = 'btn-option';
+                button.innerText = option;
+                button.onclick = () => submitGuess(option);
+                optionsContainer.appendChild(button);
+            });
+        } catch (err) {
+            console.error("Error drawing question:", err);
+        }
+    }
+
+    // POST the selected answer using the Fetch API
+    async function submitGuess(chosenOption) {
+        const payload = {
+            guess: chosenOption,
+            playerName: usernameInput.value || "Anonymous"
+        };
+
+        try {
+            const response = await fetch('/api/game/answer', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            const result = await response.json();
+
+            // Disable buttons temporarily to show feedback
+            document.querySelectorAll('.btn-option').forEach(b => b.disabled = true);
+
+            if (result.correct) {
+                feedbackMsg.innerText = "✨ Correct! Awesome job.";
+                feedbackMsg.className = "feedback correct";
+            } else {
+                feedbackMsg.innerText = `❌ Wrong! The correct answer was "${result.correctAnswer}". Score reset!`;
+                feedbackMsg.className = "feedback wrong";
+            }
+
+            scoreVal.innerText = result.currentScore;
+
+            // Wait 2 seconds, refresh leaderboard and load next question
+            setTimeout(() => {
+                loadLeaderboard();
+                loadNextQuestion();
+            }, 2000);
+
+        } catch (err) {
+            console.error("Error submitting answer:", err);
+        }
+    }
+
+    // Load leaderboard scores from the server
+    async function loadLeaderboard() {
+        try {
+            const response = await fetch('/api/game/leaderboard');
+            const list = await response.json();
+            leaderboardData.innerHTML = '';
+            
+            list.forEach((entry, idx) => {
+                leaderboardData.innerHTML += `<li><span>${idx + 1}. ${entry.name}</span> <strong>${entry.score} pts</strong></li>`;
+            });
+        } catch (err) {
+            console.error("Error fetching leaderboard:", err);
+        }
+    }
+
+    // Initialize Game on Window Load
+    loadNextQuestion();
+    loadLeaderboard();
+</script>
+</body>
+</html>
