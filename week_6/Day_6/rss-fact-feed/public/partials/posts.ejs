@@ -1,0 +1,24 @@
+<div class="container">
+    <% if (typeof posts !== 'undefined' && posts.length > 0) { %>
+        <% posts.forEach(item => { %>
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <a href="<%= item.link %>" target="_blank"><%= item.title %></a>
+                    </h5>
+                    <h6 class="card-subtitle mb-2 text-muted">
+                        Published: <%= item.pubDate || 'Unknown' %> | 
+                        Creator: <%= item.creator || item['dc:creator'] || 'Anonymous' %>
+                    </h6>
+                    <p class="card-text">
+                        <strong>Categories:</strong> 
+                        <%= Array.isArray(item.categories) ? item.categories.join(', ') : (item.categories || 'None') %>
+                    </p>
+                    <div class="card-text"><%- item.content || item.contentSnippet %></div>
+                </div>
+            </div>
+        <% }) %>
+    <% } else if (typeof posts !== 'undefined') { %>
+        <div class="alert alert-info">No posts found matching your criteria.</div>
+    <% } %>
+</div>

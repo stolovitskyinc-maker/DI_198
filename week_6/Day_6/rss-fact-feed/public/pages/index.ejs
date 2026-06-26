@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('../partials/head') %>
+<body>
+    <%- include('../partials/header') %>
+    <main class="container">
+        <h1 class="mb-4 text-center">All Facts</h1>
+        <%- include('../partials/posts', { posts: posts }) %>
+    </main>
+    <%- include('../partials/footer') %>
+</body>
+</html>

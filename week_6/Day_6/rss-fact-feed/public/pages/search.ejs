@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('../partials/head') %>
+<body>
+    <%- include('../partials/header') %>
+    <main class="container mb-5">
+        <h1 class="mb-4 text-center">Search Facts</h1>
+        
+        <div class="row mb-4">
+            <!-- Search by Title -->
+            <div class="col-md-6">
+                <div class="card p-3">
+                    <h5>Search by Title</h5>
+                    <form action="/search/title" method="POST">
+                        <div class="input-group">
+                            <input type="text" name="title" class="form-control" placeholder="Enter keyword..." required>
+                            <button class="btn btn-primary" type="submit">Search</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Search by Category -->
+            <div class="col-md-6">
+                <div class="card p-3">
+                    <h5>Search by Category</h5>
+                    <form action="/search/category" method="POST">
+                        <div class="input-group">
+                            <select name="category" class="form-select" required>
+                                <option value="" disabled selected>Choose a category...</option>
+                                <% if (typeof categories !== 'undefined') { %>
+                                    <% categories.forEach(cat => { %>
+                                        <option value="<%= cat %>"><%= cat %></option>
+                                    <% }) %>
+                                <% } %>
+                            </select>
+                            <button class="btn btn-primary" type="submit">Filter</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <%- include('../partials/posts', { posts: posts }) %>
+    </main>
+    <%- include('../partials/footer') %>
+</body>
+</html>
