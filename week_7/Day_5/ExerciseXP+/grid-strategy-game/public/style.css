@@ -1,0 +1,24 @@
+#grid-container {
+    display: grid;
+    grid-template-columns: repeat(10, 40px);
+    grid-template-rows: repeat(10, 40px);
+    gap: 2px;
+    margin: 20px auto;
+    width: 420px;
+}
+
+.cell {
+    background-color: #e0e0e0;
+    border: 1px solid #ccc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+
+/* Cell States */
+.obstacle { background-color: #555; }
+.player1 { background-color: #3498db; color: white; }
+.player2 { background-color: #e74c3c; color: white; }
+.base1 { border: 3px dashed #3498db; }
+.base2 { border: 3px dashed #e74c3c; }

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Grid Strategy Game</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="game-controls">
+        <button id="start-btn">Start New Game</button>
+        <div id="status-display">Click Start to Play</div>
+    </div>
+
+    <!-- The 10x10 Game Board -->
+    <div id="grid-container"></div>
+
+    <div id="action-controls">
+        <button onclick="sendMove('up')">▲ Up</button>
+        <div>
+            <button onclick="sendMove('left')">◀ Left</button>
+            <button onclick="sendAttack()">⚔️ Attack Base</button>
+            <button onclick="sendMove('right')">Right ▶</button>
+        </div>
+        <button onclick="sendMove('down')">▼ Down</button>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
