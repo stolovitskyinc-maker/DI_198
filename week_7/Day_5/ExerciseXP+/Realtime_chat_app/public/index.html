@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real-Time Chat Workspace</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Overlay Panel for Login Authentication Details -->
+        <div id="join-container" class="card">
+            <h2>Select Your Workspace Channel</h2>
+            <form id="join-form">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" placeholder="Enter username..." required autocomplete="off">
+                </div>
+                <div class="form-group">
+                    <label for="room">Chat Room Channel</label>
+                    <select id="room">
+                        <option value="JavaScript Hub">JavaScript Hub</option>
+                        <option value="Python Lounge">Python Lounge</option>
+                        <option value="DevOps Grid">DevOps Grid</option>
+                        <option value="General Watercooler">General Watercooler</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn">Enter Room</button>
+            </form>
+        </div>
+
+        <!-- Hidden Main Live Communication Module Viewport -->
+        <div id="chat-container" class="card hidden">
+            <header class="chat-header">
+                <h2 id="room-name-display">Active Room</h2>
+                <button id="leave-btn" class="btn btn-danger">Leave</button>
+            </header>
+            
+            <main class="chat-main">
+                <aside class="chat-sidebar">
+                    <h3>Online Members</h3>
+                    <ul id="users-list"></ul>
+                </aside>
+                <section class="chat-messages-wrapper">
+                    <div id="chat-messages"></div>
+                </section>
+            </main>
+
+            <footer class="chat-footer">
+                <form id="chat-form">
+                    <input type="text" id="msg-input" placeholder="Type a message..." required autocomplete="off">
+                    <button type="submit" class="btn">Send</button>
+                </form>
+            </footer>
+        </div>
+    </div>
+
+    <!-- Client-side bindings generated dynamically by Socket.io engine -->
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>

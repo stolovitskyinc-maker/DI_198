@@ -1,0 +1,221 @@
+:root {
+    --bg-primary: #f0f2f5;
+    --card-bg: #ffffff;
+    --text-main: #333333;
+    --accent-color: #4f46e5;
+    --accent-hover: #4338ca;
+    --system-msg: #6b7280;
+    --border-color: #e5e7eb;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: var(--bg-primary);
+    color: var(--text-main);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.app-container {
+    width: 100%;
+    max-width: 900px;
+    padding: 20px;
+}
+
+.card {
+    background: var(--card-bg);
+    border-radius: 12px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    overflow: hidden;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* Entry Form Screen Specific Styling Rules */
+#join-container {
+    max-width: 450px;
+    margin: 0 auto;
+    padding: 30px;
+}
+
+#join-container h2 {
+    margin-bottom: 20px;
+    text-align: center;
+    color: var(--accent-color);
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.form-group input, .form-group select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    outline: none;
+    font-size: 15px;
+}
+
+.btn {
+    display: inline-block;
+    width: 100%;
+    padding: 12px;
+    background: var(--accent-color);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 16px;
+    transition: background 0.2s ease-in-out;
+}
+
+.btn:hover {
+    background: var(--accent-hover);
+}
+
+.btn-danger {
+    background: #ef4444;
+    width: auto;
+    padding: 8px 16px;
+}
+.btn-danger:hover {
+    background: #dc2626;
+}
+
+/* Chat Screen Main Workspace Dashboard Interface Layout Framework */
+#chat-container {
+    height: 600px;
+    display: flex;
+    flex-direction: column;
+}
+
+.chat-header {
+    background: var(--accent-color);
+    color: white;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.chat-main {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+}
+
+.chat-sidebar {
+    width: 25%;
+    background: #f9fafb;
+    border-right: 1px solid var(--border-color);
+    padding: 20px;
+    overflow-y: auto;
+}
+
+.chat-sidebar h3 {
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #4b5563;
+    margin-bottom: 10px;
+}
+
+#users-list li {
+    list-style: none;
+    padding: 8px 0;
+    font-weight: 500;
+    font-size: 15px;
+}
+
+.chat-messages-wrapper {
+    width: 75%;
+    padding: 20px;
+    background: #fff;
+}
+
+#chat-messages {
+    height: 100%;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* Message Node Parsing Render Architecture Components */
+.message {
+    padding: 10px 14px;
+    border-radius: 8px;
+    max-width: 80%;
+    width: fit-content;
+    background: var(--bg-primary);
+}
+
+.message.self {
+    background: #e0e7ff;
+    align-self: flex-end;
+}
+
+.message.system {
+    background: transparent;
+    color: var(--system-msg);
+    font-style: italic;
+    align-self: center;
+    text-align: center;
+    font-size: 13px;
+}
+
+.message-meta {
+    font-size: 11px;
+    font-weight: 600;
+    color: #6b7280;
+    margin-bottom: 4px;
+}
+
+.message-text {
+    font-size: 14px;
+    line-height: 1.4;
+    word-break: break-word;
+}
+
+.chat-footer {
+    padding: 15px 20px;
+    background: #f9fafb;
+    border-top: 1px solid var(--border-color);
+}
+
+#chat-form {
+    display: flex;
+    gap: 10px;
+}
+
+#msg-input {
+    flex: 1;
+    padding: 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    outline: none;
+}
+
+#chat-form .btn {
+    width: auto;
+    padding: 0 24px;
+}
