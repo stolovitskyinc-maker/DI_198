@@ -1,0 +1,12 @@
+# Dependencies (never upload these, they are huge)
+node_modules/
+
+# Local database / data stores (prevents leaking user info)
+users.json
+
+# Environment variables (if you add secret keys later)
+.env
+
+# System files
+.DS_Store
+Thumbs.db
