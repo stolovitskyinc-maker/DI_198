@@ -1,0 +1,50 @@
+.App {
+  text-align: center;
+  font-family: Arial, sans-serif;
+  max-width: 500_px;
+  margin: 40_px auto;
+}
+
+h1 {
+  color: #333;
+  margin-bottom: 30_px;
+}
+
+.languages-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10_px;
+}
+
+.language-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #fdf2e2; /* Light beige/orange background */
+  border: 1_px solid #333;
+  padding: 15_px 30_px;
+  font-size: 1.2_rem;
+}
+
+.vote-count {
+  width: 30_px;
+  text-align: left;
+}
+
+.language-name {
+  flex-grow: 1;
+  text-align: center;
+}
+
+.vote-button {
+  background: none;
+  border: none;
+  color: #3e7a17; /* Dark green text color */
+  font-size: 1.2_rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.vote-button:hover {
+  text-decoration: underline;
+}
