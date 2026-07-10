@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import jsPDF from 'jspdf';
 import {
   ArrowRight, MapPin, Compass, CheckCircle2, Circle, Clock, ChevronDown, ChevronUp,
-  Sparkles, Plane, Home, BookOpen,
+  Sparkles, Plane, Home, BookOpen, Download,
 } from 'lucide-react';
 
 const stages = [
@@ -108,6 +109,58 @@ export default function Dashboard() {
   const doneCount = allTasks.filter((t) => t.status === 'done').length;
   const overallProgress = Math.round((doneCount / allTasks.length) * 100);
 
+  const handleDownloadPdf = () => {
+    const doc = new jsPDF({ unit: 'pt', format: 'a4' });
+    const marginX = 48;
+    const pageWidth = doc.internal.pageSize.getWidth();
+    const pageHeight = doc.internal.pageSize.getHeight();
+    const maxWidth = pageWidth - marginX * 2;
+    let y = 56;
+
+    const ensureSpace = (nextGap) => {
+      if (y + nextGap > pageHeight - 48) {
+        doc.addPage();
+        y = 56;
+      }
+    };
+
+    const writeLines = (text, { size = 11, bold = false, color = [30, 30, 30], gap = 15 } = {}) => {
+      doc.setFont('helvetica', bold ? 'bold' : 'normal');
+      doc.setFontSize(size);
+      doc.setTextColor(...color);
+      const lines = doc.splitTextToSize(text, maxWidth);
+      lines.forEach((line) => {
+        ensureSpace(gap);
+        doc.text(line, marginX, y);
+        y += gap;
+      });
+    };
+
+    writeLines('LaunchPad AI — Relocation Roadmap', { size: 18, bold: true, gap: 24 });
+    writeLines('The Levy family · 2 adults, 2 children (ages 4 & 8) · Budget ₪8,000–12,000', {
+      size: 10,
+      color: [110, 110, 110],
+      gap: 18,
+    });
+    writeLines(`Overall progress: ${overallProgress}% (${doneCount} of ${allTasks.length} tasks complete)`, {
+      size: 11,
+      bold: true,
+      gap: 26,
+    });
+
+    stages.forEach((stage) => {
+      writeLines(stage.label, { size: 14, bold: true, gap: 20 });
+      stage.tasks.forEach((task) => {
+        const statusLabel = statusConfig[task.status].label;
+        writeLines(`[${statusLabel}] ${task.title}`, { size: 11, bold: false, gap: 15 });
+        writeLines(task.ai, { size: 9.5, color: [120, 120, 120], gap: 13 });
+      });
+      y += 10;
+    });
+
+    doc.save('launchpad-ai-relocation-roadmap.pdf');
+  };
+
   return (
     <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:px-8 lg:py-14">
       {/* Welcome */}
@@ -201,9 +254,17 @@ export default function Dashboard() {
 
       {/* Roadmap */}
       <div id="roadmap" className="mt-10 scroll-mt-20">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-wrap items-center justify-between gap-3">
           <h2 className="font-heading text-2xl font-bold tracking-tight">Your relocation roadmap</h2>
-          <span className="text-sm text-muted-foreground">{doneCount} of {allTasks.length} complete</span>
+          <div className="flex items-center gap-4">
+            <span className="text-sm text-muted-foreground">{doneCount} of {allTasks.length} complete</span>
+            <button
+              onClick={handleDownloadPdf}
+              className="inline-flex items-center gap-2 rounded-full border border-border bg-background px-4 py-2 text-sm font-semibold transition-colors hover:bg-secondary"
+            >
+              <Download className="h-4 w-4" /> Download PDF
+            </button>
+          </div>
         </div>
 
         <div className="mt-6 space-y-6">

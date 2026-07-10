@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import EmptyState from '@/components/EmptyState';
 import {
   MapPin, Star, ArrowRight, Sparkles, Heart, Bus, Users, Baby,
   Building2, TreePine, BookOpen, ShoppingCart, Stethoscope,
@@ -208,11 +209,26 @@ export default function NeighborhoodMatch() {
       </div>
 
       {/* Neighborhood cards */}
-      <div className="mt-10 grid gap-6 lg:grid-cols-3">
-        {neighborhoods.map((n) => (
-          <NeighborhoodCard key={n.name} n={n} />
-        ))}
-      </div>
+      {neighborhoods.length > 0 ? (
+        <div className="mt-10 grid gap-6 lg:grid-cols-3">
+          {neighborhoods.map((n) => (
+            <NeighborhoodCard key={n.name} n={n} />
+          ))}
+        </div>
+      ) : (
+        <div className="mt-10">
+          <EmptyState
+            icon={MapPin}
+            title="No neighborhood matches yet"
+            description="Complete the AI Concierge questions and we'll rank neighborhoods based on your budget, community, and lifestyle preferences."
+            action={
+              <Link to="/concierge" className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground">
+                Start AI Concierge <ArrowRight className="h-4 w-4" />
+              </Link>
+            }
+          />
+        </div>
+      )}
     </div>
   );
 }

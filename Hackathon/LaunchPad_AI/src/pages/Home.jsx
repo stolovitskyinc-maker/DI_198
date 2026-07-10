@@ -3,6 +3,30 @@ import {
   Sparkles, Play, ArrowRight, FileText, MapPin, Home as HomeIcon, Users,
   Compass, ShieldCheck, Bot, BadgeCheck, Plane, Baby, Briefcase, HeartHandshake,
 } from 'lucide-react';
+import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@/components/ui/accordion';
+
+const faqs = [
+  {
+    q: 'How does the AI Concierge build my relocation plan?',
+    a: 'You answer a short set of guided questions about your family, budget, visa pathway, and lifestyle preferences. The AI uses those answers to generate a prioritized, stage-by-stage roadmap — documents, deadlines, and local tips included.',
+  },
+  {
+    q: 'Is LaunchPad AI only for Aliyah / Israel relocations?',
+    a: "Right now the product is focused specifically on relocating to Israel, including Aliyah, B-1 skilled-worker visas, and family reunification cases. Support for other countries may come later.",
+  },
+  {
+    q: 'How accurate are the neighborhood matches?',
+    a: 'Matches are ranked using the preferences you provide — budget, commute, schools, and community fit. They are meant as a strong starting point for your own research, not a guarantee of a perfect fit.',
+  },
+  {
+    q: 'Do I need an account to try the demo?',
+    a: 'No — the demo page is open to everyone. Creating an account is only needed to save your concierge answers, dashboard progress, and neighborhood matches across sessions.',
+  },
+  {
+    q: 'Can I edit my answers after generating a plan?',
+    a: 'Yes. You can restart the AI Concierge at any point to update your answers, and your roadmap and matches will reflect the new information.',
+  },
+];
 
 const problems = [
   { icon: FileText, title: 'Endless paperwork', text: 'Visas, Bituah Leumi, bank accounts, and licenses — each with its own rules and queues.' },
@@ -197,6 +221,31 @@ export default function Home() {
               </div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* FAQ */}
+      <section className="border-t border-border/60 bg-secondary/30">
+        <div className="mx-auto max-w-3xl px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
+          <div className="text-center">
+            <p className="text-sm font-semibold uppercase tracking-wider text-orange-600">FAQ</p>
+            <h2 className="mt-3 font-heading text-3xl font-bold tracking-tight sm:text-4xl text-balance">
+              Common questions
+            </h2>
+          </div>
+
+          <Accordion type="single" collapsible className="mt-10 rounded-2xl border border-border bg-card px-6 shadow-sm">
+            {faqs.map((f) => (
+              <AccordionItem key={f.q} value={f.q}>
+                <AccordionTrigger className="text-left font-heading text-base font-semibold">
+                  {f.q}
+                </AccordionTrigger>
+                <AccordionContent className="text-sm leading-relaxed text-muted-foreground">
+                  {f.a}
+                </AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
         </div>
       </section>
 

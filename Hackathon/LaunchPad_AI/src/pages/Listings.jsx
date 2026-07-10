@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import EmptyState from '@/components/EmptyState';
 import {
   Home, MapPin, BedDouble, Maximize, ArrowRight, ExternalLink, Sparkles,
   ShieldCheck, Shield, ShieldAlert, Building2, ArrowUp, Car, Accessibility, PawPrint,
@@ -239,11 +240,26 @@ export default function Listings() {
       </div>
 
       {/* Listings grid */}
-      <div className="mt-8 grid gap-6 lg:grid-cols-2">
-        {listings.map((l) => (
-          <ListingCard key={l.area} l={l} />
-        ))}
-      </div>
+      {listings.length > 0 ? (
+        <div className="mt-8 grid gap-6 lg:grid-cols-2">
+          {listings.map((l) => (
+            <ListingCard key={l.area} l={l} />
+          ))}
+        </div>
+      ) : (
+        <div className="mt-8">
+          <EmptyState
+            icon={Home}
+            title="No listings matched yet"
+            description="Once your AI Concierge profile and neighborhood match are ready, matched listings will show up here."
+            action={
+              <Link to="/concierge" className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground">
+                Start AI Concierge <ArrowRight className="h-4 w-4" />
+              </Link>
+            }
+          />
+        </div>
+      )}
     </div>
   );
 }
