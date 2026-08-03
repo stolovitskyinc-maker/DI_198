@@ -1,0 +1,414 @@
+:root {
+  --ink: #12303A;
+  --ink-deep: #0C232B;
+  --paper: #FCFAF3;
+  --paper-dim: #F1EDDE;
+  --amber: #E8A33D;
+  --amber-soft: #F3C778;
+  --sage: #7C9885;
+  --line: #D8D2BE;
+  --text-on-ink: #EDEEE9;
+  --text-muted: #9FB4B0;
+  --danger: #C1543C;
+
+  --font-display: 'Fraunces', serif;
+  --font-body: 'IBM Plex Sans', sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--ink);
+  color: var(--text-on-ink);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.app-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: radial-gradient(circle at top left, #163842 0%, var(--ink) 45%, var(--ink-deep) 100%);
+}
+
+.app-header {
+  padding: 2.5rem clamp(1.25rem, 5vw, 4rem) 1.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.app-header-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--amber-soft);
+  margin-bottom: 0.5rem;
+}
+
+.app-header-title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(1.75rem, 3vw, 2.5rem);
+  margin: 0;
+  color: var(--text-on-ink);
+}
+
+.app-main {
+  flex: 1;
+  display: grid;
+  grid-template-columns: minmax(260px, 320px) 1fr;
+  gap: 1.5rem;
+  padding: 1.75rem clamp(1.25rem, 5vw, 4rem) 3rem;
+  align-items: start;
+}
+
+@media (max-width: 760px) {
+  .app-main {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ---------- Calendar ---------- */
+
+.app-sidebar {
+  position: sticky;
+  top: 1.5rem;
+}
+
+.calendar {
+  background: var(--paper);
+  color: var(--ink);
+  border-radius: 14px;
+  padding: 1.25rem 1.25rem 1.5rem;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.28);
+}
+
+.calendar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.9rem;
+}
+
+.calendar-title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.05rem;
+}
+
+.calendar-nav {
+  border: none;
+  background: var(--paper-dim);
+  color: var(--ink);
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  font-size: 1rem;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s ease;
+}
+
+.calendar-nav:hover {
+  background: var(--amber-soft);
+}
+
+.calendar-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--sage);
+  text-align: center;
+  margin-bottom: 0.35rem;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+}
+
+.calendar-cell {
+  aspect-ratio: 1 / 1;
+  border: none;
+  background: transparent;
+  border-radius: 8px;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  color: var(--ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.calendar-cell.empty {
+  visibility: hidden;
+}
+
+.calendar-cell:not(.empty):hover {
+  background: var(--paper-dim);
+}
+
+.calendar-cell.today {
+  border: 1px solid var(--sage);
+  font-weight: 600;
+}
+
+.calendar-cell.selected {
+  background: var(--ink);
+  color: var(--amber-soft);
+  font-weight: 600;
+}
+
+/* ---------- Task List Panel ---------- */
+
+.task-list-panel {
+  background: var(--paper);
+  color: var(--ink);
+  border-radius: 14px;
+  padding: 1.75rem clamp(1.25rem, 3vw, 2.25rem) 2.25rem;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.28);
+  min-height: 420px;
+}
+
+.task-list-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.task-list-date {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.6rem;
+  margin: 0;
+}
+
+.task-list-count {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--sage);
+}
+
+/* ---------- Add Task ---------- */
+
+.add-task {
+  display: flex;
+  gap: 0.6rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.add-task-input {
+  flex: 1 1 240px;
+  padding: 0.65rem 0.9rem;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  background: #fff;
+  color: var(--ink);
+}
+
+.add-task-time {
+  padding: 0.65rem 0.7rem;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  background: #fff;
+  color: var(--ink);
+}
+
+.add-task-input:focus,
+.add-task-time:focus,
+.task-edit-input:focus,
+.task-edit-time:focus {
+  outline: 2px solid var(--amber);
+  outline-offset: 1px;
+}
+
+.add-task-button {
+  border: none;
+  background: var(--ink);
+  color: var(--amber-soft);
+  padding: 0.65rem 1.2rem;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: background 0.15s ease;
+}
+
+.add-task-button:hover {
+  background: var(--ink-deep);
+}
+
+/* ---------- Task List / Items ---------- */
+
+.task-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.task-list-empty {
+  font-family: var(--font-body);
+  color: var(--sage);
+  font-style: italic;
+  padding: 1.5rem 0;
+  border: 1px dashed var(--line);
+  border-radius: 10px;
+  text-align: center;
+}
+
+.task-item {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 0.75rem 0.9rem;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: #fff;
+  transition: opacity 0.15s ease;
+}
+
+.task-item.done {
+  opacity: 0.55;
+}
+
+.task-checkbox {
+  flex: 0 0 auto;
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  border: 2px solid var(--sage);
+  background: transparent;
+  color: var(--sage);
+  font-weight: 700;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.task-item.done .task-checkbox {
+  background: var(--sage);
+  color: #fff;
+}
+
+.task-body {
+  flex: 1 1 auto;
+  display: flex;
+  align-items: baseline;
+  gap: 0.65rem;
+  min-width: 0;
+}
+
+.task-time {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--amber);
+  flex: 0 0 auto;
+}
+
+.task-title {
+  font-size: 0.95rem;
+  color: var(--ink);
+  overflow-wrap: anywhere;
+}
+
+.task-item.done .task-title {
+  text-decoration: line-through;
+}
+
+.task-item-actions {
+  flex: 0 0 auto;
+  display: flex;
+  gap: 0.4rem;
+}
+
+.task-edit,
+.task-delete,
+.task-save,
+.task-cancel {
+  border: none;
+  background: var(--paper-dim);
+  color: var(--ink);
+  font-size: 0.78rem;
+  font-weight: 500;
+  padding: 0.4rem 0.7rem;
+  border-radius: 6px;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.task-edit:hover,
+.task-save:hover {
+  background: var(--amber-soft);
+}
+
+.task-delete:hover {
+  background: var(--danger);
+  color: #fff;
+}
+
+.task-cancel:hover {
+  background: var(--line);
+}
+
+.task-item.editing {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.task-edit-input {
+  flex: 1 1 200px;
+  padding: 0.55rem 0.75rem;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+}
+
+.task-edit-time {
+  padding: 0.55rem 0.6rem;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+}
+
+/* Accessibility */
+:focus-visible {
+  outline: 2px solid var(--amber);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+  }
+}
